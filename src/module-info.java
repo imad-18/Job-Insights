@@ -1,0 +1,2 @@
+module job_insights {
+}
