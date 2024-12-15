@@ -8,6 +8,8 @@ import java.awt.Image;
 import java.awt.Label;
 import java.awt.Toolkit;
 import java.awt.event.ActionListener;
+import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -29,8 +31,23 @@ import scraper.Rekrute_scraper;
 
 //date format YYYY-MM-DD
 
+import com.sun.net.httpserver.HttpServer;
+
+
 public class Main {
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		
+		
+		
+		HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+
+
+        server.createContext("/api/offres", new Controller());
+
+        // Lancer le serveur
+        server.setExecutor(null); // Utilise le pool de threads par défaut
+        server.start();
+        System.out.println("Serveur démarré sur le port 8080");
 		
 		//1. Scrapping methode
 		

@@ -14,16 +14,12 @@ public class Database {
 	    private String url = "jdbc:mysql://localhost:3306/javaproject";
 	    private String user = "root";
 	    private String password = "";
+	    
+	    Connection connection ;
 
-	    public void insertData(ArrayList<Annonce> listAnnonce) {
-	        // JDBC objects
-	        Connection connection = null;
-	        PreparedStatement preparedStatement = null;
-
-	        // la requeette d insertion
-	        String insertQuery = "INSERT INTO annonce (title, location, description, StartDate, EndDate, PostsNum, Secteur, Fonction, Experience, EtudeLevel, "
-	        		+ "ContratDetails) VALUES (?, ?, ?, STR_TO_DATE(REGEXP_REPLACE(?, '[.]', '/'), '%d/%m/%Y'), STR_TO_DATE(REGEXP_REPLACE(?, '[.]', '/'), '%d/%m/%Y'),"
-	        		+ " ?, ?, ?, ?, ?, ?)";
+	    public void data_base_connection(){
+	    	 
+	    	this.connection = null;
 	        try {
 	        	// Loading the connection
 				Class.forName("com.mysql.cj.jdbc.Driver");
@@ -35,6 +31,32 @@ public class Database {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+	    
+        try {
+        	// Loading the connection
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			
+			// creation de la connexion avec url mdp et username
+	        this.connection = DriverManager.getConnection(url, user, password);
+	        System.out.println("Connected to the database!");
+	        
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+        
+	    }
+	    
+	    
+	    public void insertData(ArrayList<Annonce> listAnnonce) {
+	        // JDBC objects
+	        Connection connection = null;
+	        PreparedStatement preparedStatement = null;
+
+	        // la requeette d insertion
+	        String insertQuery = "INSERT INTO annonce (title, location, description, StartDate, EndDate, PostsNum, Secteur, Fonction, Experience, EtudeLevel, "
+	        		+ "ContratDetails) VALUES (?, ?, ?, STR_TO_DATE(REGEXP_REPLACE(?, '[.]', '/'), '%d/%m/%Y'), STR_TO_DATE(REGEXP_REPLACE(?, '[.]', '/'), '%d/%m/%Y'),"
+	        		+ " ?, ?, ?, ?, ?, ?)";
+
 	        
 	        ArrayList test = this.selectData();
 	        if(test.size() == 0) {
@@ -124,4 +146,5 @@ public class Database {
 	    	
 	    }
 
+	    //nzido delete base donnée li mn site ...
 }
