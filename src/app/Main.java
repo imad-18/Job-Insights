@@ -3,6 +3,7 @@ package app;
 import java.util.ArrayList;
 
 import data_analyse.NLPProcessor;
+import data_analyse.ResultsDataHandler;
 import db.Database;
 import model.Annonce;
 
@@ -17,11 +18,24 @@ public class Main {
 			//2.recuperation des annonces de la base
 			ArrayList<Annonce> a = b.selectData();
 				
-			//3.Creatin de NLP model
-			NLPProcessor nlp = new NLPProcessor();
-			
-			//test
-			nlp.test("Quels sont les offres dispnibles a Casablanca ?");
+			//3.Creatin de NLP model and testing
+		NLPProcessor nlpProcessor = new NLPProcessor();
+		ResultsDataHandler resultsDataHandler = new ResultsDataHandler();
+
+		String userQuery = "Je cherche des offres à Rabat dans le secteur banque";
+		String[] tokens = nlpProcessor.tokenizeQuery(userQuery);
+		String intent = nlpProcessor.identifyIntent(tokens);
+
+		if ("location".equals(intent)) {
+			System.out.println("Location NLP response");
+		} else if ("secteur".equals(intent)) {
+			System.out.println("Secteur NLP response");
+		} else {
+			System.out.println("Désolé, je n'ai pas compris votre question.");
+		}
+
+		resultsDataHandler.displayChart();
+
         
 	} 
 }
