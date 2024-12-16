@@ -145,6 +145,46 @@ public class Database {
 	    	return a;
 	    	
 	    }
+	    
+	    public ArrayList<Annonce> SelectedData(String attribut , String token){
+	    	ArrayList<Annonce> a = new ArrayList<Annonce>();
+	        Connection connection = null;
+	        PreparedStatement preparedStatement = null;
+	        String query = "SELECT * FROM annonce WHERE "+attribut+" LIKE ?";
+	    	try {
+	    		Class.forName("com.mysql.cj.jdbc.Driver");
+	    		
+	    		connection = DriverManager.getConnection(url,user,password);
+	    		System.out.println("Connected to the database!");
+	    		
+	    		
+	    	}catch(Exception e){
+	    		System.out.println("Connection failed");
+	    	}
+	    	try {
+	    		preparedStatement = connection.prepareStatement(query);
+	            preparedStatement.setString(1, "%" + token + "%");
+	            ResultSet resultSet = preparedStatement.executeQuery();
+	            while(resultSet.next()){
+	            	Annonce test = new Annonce(resultSet.getInt(1),resultSet.getString(2),resultSet.getString(3),resultSet.getString(4),resultSet.getString(5)
+	            			,resultSet.getString(6),resultSet.getInt(7),resultSet.getString(8),resultSet.getString(9),resultSet.getString(10),resultSet.getString(11),
+	            			resultSet.getString(12));
+	            	a.add(test);
+	            }
+	    	}
+	    	catch(Exception e) {
+	    		System.out.println("Selection failed");
+	    	}
+	    	
+	        try {
+	            if (preparedStatement != null) preparedStatement.close();
+	            if (connection != null) connection.close();
+	        } catch (Exception ex) {
+	            ex.printStackTrace();
+	        }
+	    	return a;
+	    }
+	    
 
 	    //nzido delete base donnée li mn site ...
 }
