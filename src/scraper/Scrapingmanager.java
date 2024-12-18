@@ -1,5 +1,5 @@
 package scraper;
 
-public class Sitemanager {
+class Sitemanager {
 
 }
