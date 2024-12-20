@@ -10,19 +10,19 @@ import model.Annonce;
 //date format YYYY-MM-DD
 
 public class Main {
-	public static void main(String[] args) {	
-			//1.Insertion des annonces dans la base
-			Database b = new Database();
-			//b.insertData(s.getListeAnnonce());
-				
-			//2.recuperation des annonces de la base
-			ArrayList<Annonce> a = b.selectData();
-				
-			//3.Creatin de NLP model and testing
+	public static void main(String[] args) {
+		//1.Insertion des annonces dans la base
+		Database b = new Database();
+		//b.insertData(s.getListeAnnonce());
+
+		//2.recuperation des annonces de la base
+		ArrayList<Annonce> a = b.selectData();
+
+		//3.Creatin de NLP model and testing
 		NLPProcessor nlpProcessor = new NLPProcessor();
 		ResultsDataHandler resultsDataHandler = new ResultsDataHandler();
 
-		String userQuery = "Je cherche des offres à Rabat dans le secteur banque";
+		String userQuery = "Je cherche des offres à Casablanca";
 		String[] tokens = nlpProcessor.tokenizeQuery(userQuery);
 		String intent = nlpProcessor.identifyIntent(tokens);
 
@@ -33,9 +33,9 @@ public class Main {
 		} else {
 			System.out.println("Désolé, je n'ai pas compris votre question.");
 		}
+		//partie d interface graphiqur vas etre utiliser par imad pour affichage des graphe
+		//resultsDataHandler.displayChart();
 
-		resultsDataHandler.displayChart();
 
-        
-	} 
+	}
 }

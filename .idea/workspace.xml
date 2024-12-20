@@ -4,7 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="97625314-bcac-4121-b34f-7b06f9610601" name="Changes" comment="" />
+    <list default="true" id="97625314-bcac-4121-b34f-7b06f9610601" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/src/data_analyse/data.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/data_analyse/salaire.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/job_insights.iml" beforeDir="false" afterPath="$PROJECT_DIR$/job_insights.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/app/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/Pair2.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/PairData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/ResultsDataHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/ResultsDataHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data_analyse/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/Identifier.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/data_analyse/ResultsDataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/ResultsDataHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -20,32 +39,33 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2qJc2ieq6ZC19GN9QMIQNoLhUxg" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/najib/Downloads/jfreechart-1.5.3.jar",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2632184",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;data__analyse&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/najib/Downloads/gson-2.8.6-javadoc.jar&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2632184&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -62,7 +82,11 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1734383919970</updated>
-      <workItem from="1734383921048" duration="5196000" />
+      <workItem from="1734383921048" duration="12849000" />
+      <workItem from="1734426387909" duration="5658000" />
+      <workItem from="1734463783759" duration="2511000" />
+      <workItem from="1734553386865" duration="375000" />
+      <workItem from="1734710596540" duration="9355000" />
     </task>
     <servers />
   </component>
