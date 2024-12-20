@@ -8,17 +8,13 @@ import java.util.regex.Pattern;
 public class Identifier {
     private List<String> cities;
     private List<String> sectors;
-    private List<String> experience;
-    private List<String> etudeLevel;
     private List<String> siteName;
     private List<String> langue;
 
-    public Identifier(List<String> cities, List<String> sectors , List<String> experience , List<String> etudeLevel
+    public Identifier(List<String> cities, List<String> sectors
             , List<String> siteName, List<String> langue) {
         this.cities = cities;
         this.sectors = sectors;
-        this.experience = experience;
-        this.etudeLevel = etudeLevel;
         this.siteName = siteName;
         this.langue = langue;
     }
@@ -32,11 +28,15 @@ public class Identifier {
     }
 
     public String identifyExperience(String[] tokens) {
-        return contains(tokens, experience);
+        return contains(tokens,sectors);
     }
 
     public String identifyEtudeLevel(String[] tokens) {
-        return contains(tokens, etudeLevel);
+        return contains(tokens,sectors);
+    }
+
+    public String identifyCompetence(String[] tokens) {
+        return contains(tokens,sectors);
     }
 
     public String identifySiteName(String[] tokens) {

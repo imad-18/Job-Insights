@@ -5,24 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="97625314-bcac-4121-b34f-7b06f9610601" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/data_analyse/data.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/data_analyse/salaire.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/job_insights.iml" beforeDir="false" afterPath="$PROJECT_DIR$/job_insights.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/app/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/Pair2.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/PairData.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/ResultsDataHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/ResultsDataHandler.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/module-info.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_analyse/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/Identifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_analyse/ResultsDataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/ResultsDataHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/db/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/Database.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +73,7 @@
       <workItem from="1734426387909" duration="5658000" />
       <workItem from="1734463783759" duration="2511000" />
       <workItem from="1734553386865" duration="375000" />
-      <workItem from="1734710596540" duration="9355000" />
+      <workItem from="1734710596540" duration="18158000" />
     </task>
     <servers />
   </component>
