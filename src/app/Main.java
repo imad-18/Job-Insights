@@ -35,7 +35,5 @@ public class Main {
 		}
 		//partie d interface graphiqur vas etre utiliser par imad pour affichage des graphe
 		//resultsDataHandler.displayChart();
-
-
 	}
 }

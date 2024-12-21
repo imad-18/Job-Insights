@@ -6,5 +6,6 @@ module job_insights {
 	requires org.apache.opennlp.tools;
 	requires mysql.connector.j;
 	requires org.jfree.jfreechart;
+    requires jdk.httpserver;
 	requires org.apache.commons.lang3;
 }

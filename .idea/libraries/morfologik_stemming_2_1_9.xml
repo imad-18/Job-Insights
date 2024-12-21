@@ -1,7 +1,19 @@
 <component name="libraryTable">
   <library name="morfologik-stemming-2.1.9">
     <CLASSES>
-      <root url="jar://$USER_HOME$/Downloads/morfologik-stemming-2.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/hppc-0.7.2.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/jcommander-1.78.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/log4j-api-2.24.2.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/log4j-core-2.24.2.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/log4j-slf4j2-impl-2.24.2.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/morfologik-fsa-2.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/morfologik-fsa-builders-2.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/morfologik-stemming-2.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/morfologik-tools-2.1.9.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/opennlp-morfologik-addon-2.5.1.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/opennlp-tools-2.5.1.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/opennlp-tools-models-2.5.1.jar!/" />
+      <root url="jar://$USER_HOME$/Documents/lib/opennlp-uima-2.5.1.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />
