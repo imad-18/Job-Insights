@@ -344,23 +344,6 @@ public class Mjob {
         mjob.mjobscrapping();
 
 
-        // Sample data (replace with your actual data)
-        String title = "Example Title";
-        String searchedProfile = "Description of job";
-        String secteur = "IT";
-        String experienceYears = "3 years";
-        String StudyLevel = "Bachelor";
-        String contractType = "Full-Time";
-        String annonceLink = "http://example.com/job";
-        String company_name = "Example Company";
-        String descriptionDentreprise = "Leading tech company";
-        String city = "City Name";
-        String industry = "Technology";
-        String softskills = "Teamwork, Communication";
-        String langues = "English";
-        String salary = "5000";
-        String avantagesSociaux = "Health insurance";
-        // Scraped data
 
         // Database credentials
         String url = "jdbc:mysql://localhost:3306/javaproject"; // Database URL
@@ -372,8 +355,6 @@ public class Mjob {
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)";*/
 
         String sql = "INSERT INTO annonce (`title`, `description`, `Secteur`, `Experience`, `EtudeLevel`, `ContratDetails`, `URL`, `Nom d'entreprise`, `Description d'entreprise`, `City`, `Industry`, `SoftSkills`, `Langue`, `Salaire`, `AvantagesSociaux`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        String sql_query = "INSERT INTO `annonce`(`id`, `title`, `description`, `StartDate`, `EndDate`, `PostsNum`, `Secteur`, `Fonction`, `Experience`, `EtudeLevel`, `ContratDetails`, `URL`, `SiteName`, `Adresse d'entreprise`, `Site web d'entreprise`, `Nom d'entreprise`, `Description d'entreprise`, `Region`, `City`, `Industry`, `TraitsPersonnalite`, `CompetencesRequises`, `SoftSkills`, `CompetencesRecommandees`, `Langue`, `NiveauLangue`, `Salaire`, `AvantagesSociaux`, `Teletravail`) " +
-                "VALUES ('[value-1]','[value-2]','[value-3]','[value-4]','[value-5]','[value-6]','[value-7]','[value-8]','[value-9]','[value-10]','[value-11]','[value-12]','[value-13]','[value-14]','[value-15]','[value-16]','[value-17]','[value-18]','[value-19]','[value-20]','[value-21]','[value-22]','[value-23]','[value-24]','[value-25]','[value-26]','[value-27]','[value-28]','[value-29]')";
         try {
             // Connect to the database
             Connection connection = DriverManager.getConnection(url, username, password);
@@ -383,7 +364,7 @@ public class Mjob {
 
             // Set the values for the placeholders (?)
             // Use data from the Mjob object
-            /*statement.setString(1, mjob.getTitle());                   // title
+            statement.setString(1, mjob.getTitle());                   // title
             statement.setString(2, mjob.getSearchedProfile());         // description
             statement.setString(3, mjob.getSecteur());                 // Secteur
             statement.setString(4, mjob.getExperienceYears());         // Experience
@@ -398,23 +379,9 @@ public class Mjob {
             statement.setString(13, mjob.getLangues());                // Langue
             statement.setString(14, mjob.getSalary());                 // Salaire
             statement.setString(15, mjob.getAvantagesSociaux());       // AvantagesSociaux
-*/
-            // Set the values for the placeholders
-            statement.setString(1, title);                    // title
-            statement.setString(2, searchedProfile);          // description
-            statement.setString(3, secteur);                 // Secteur
-            statement.setString(4, experienceYears);         // Experience
-            statement.setString(5, StudyLevel);              // EtudeLevel
-            statement.setString(6, contractType);            // ContratDetails
-            statement.setString(7, annonceLink);             // URL
-            statement.setString(8, company_name);            // Nom d'entreprise
-            statement.setString(9, descriptionDentreprise);  // Description d'entreprise
-            statement.setString(10, city);                   // City
-            statement.setString(11, industry);               // Industry
-            statement.setString(12, softskills);             // SoftSkills
-            statement.setString(13, langues);                // Langue
-            statement.setString(14, salary);                 // Salaire
-            statement.setString(15, avantagesSociaux);       // AvantagesSociaux
+
+
+
             // Execute the query
             int rowsInserted = statement.executeUpdate();
 
