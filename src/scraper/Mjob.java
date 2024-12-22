@@ -1,20 +1,22 @@
 package scraper;
-
+import model.Annonce;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Mjob {
+
+    static public List<Annonce> listeAnnonce = new ArrayList<Annonce>();
+    int id = 0;
     static String title;
-    static String searchedProfile;
+    static String searchedProfile; //profile à recherché
     static String publishDate;
     static String secteur;
     static String experienceYears;
@@ -25,10 +27,35 @@ public class Mjob {
     static String descriptionDentreprise;
     static String city;
     static String industry;
-    static String softskills;
+    static String posteAoccuper; //Poste à occuper
     static String langues;
     static String salary;
     static String avantagesSociaux;
+
+    public Mjob() {
+    }
+
+    public Mjob(String title, String searchedProfile, String publishDate, String secteur,
+                String experienceYears, String StudyLevel, String contractType, String annonceLink,
+                String company_name, String descriptionDentreprise, String city, String industry,
+                String softskills, String langues, String salary, String avantagesSociaux) {
+        Mjob.title = title;
+        Mjob.searchedProfile = searchedProfile;
+        Mjob.publishDate = publishDate;
+        Mjob.secteur = secteur;
+        Mjob.experienceYears = experienceYears;
+        Mjob.StudyLevel = StudyLevel;
+        Mjob.contractType = contractType;
+        Mjob.annonceLink = annonceLink;
+        Mjob.company_name = company_name;
+        Mjob.descriptionDentreprise = descriptionDentreprise;
+        Mjob.city = city;
+        Mjob.industry = industry;
+        Mjob.posteAoccuper = softskills;
+        Mjob.langues = langues;
+        Mjob.salary = salary;
+        Mjob.avantagesSociaux = avantagesSociaux;
+    }
 
     public static String getTitle() {
         return title;
@@ -78,8 +105,8 @@ public class Mjob {
         return industry;
     }
 
-    public static String getSoftskills() {
-        return softskills;
+    public static String getPosteAoccuper() {
+        return posteAoccuper;
     }
 
     public static String getLangues() {
@@ -100,26 +127,49 @@ public class Mjob {
 
     String mjob = "https://www.m-job.ma/recherche";
 
-    public void mjobscrapping(){
+    public List<Annonce> mjobscrapping() {
+
+        String totalPages="15" ;
         try {
             Document document = Jsoup.connect(mjob).get();
-            Elements jobItems = document.select("div.offer-box");
+            Elements spanElements = document.select("div.offers-list-header > span");
 
+            if (!spanElements.isEmpty()) {
+                // Récupérer le texte (le bon <span>)
+                String text = spanElements.first().text();
 
-            for (Element jobItem : jobItems) {
+                // Extraire le nombre de pages avec une regex
+                totalPages = text.replaceAll(".*Page \\d+ / (\\d+) .*", "$1");
+                try {
+                    // Convertir en entier
+                    int totalPagesInt = Integer.parseInt(totalPages);
+                    System.out.println("Nombre total de pages : " + totalPagesInt);
+                } catch (NumberFormatException e) {
+                    System.out.println("Erreur lors de la conversion en entier !");
+                }
+            } else {
+                System.out.println("Aucun texte correspondant trouvé !");
+            }
+            for(int j=0 ; j<Integer.parseInt(totalPages);j++ ){
+
+                Elements jobItems = document.select("div.offer-box");
+
+                for (Element jobItem : jobItems) {
+                id++;
+                System.out.println(id);
                 Element titleElement = jobItem.selectFirst("h3.offer-title");
                 if (titleElement != null) {
                     title = titleElement.text();
-                    System.out.println("1- Title: "+title);
-                }else {
+                    System.out.println("1- Title: " + title);
+                } else {
                     System.out.println("No title found");
                 }
 
                 Element locationElement = jobItem.selectFirst(".location");
                 if (locationElement != null) {
                     city = locationElement.text();
-                    System.out.println("2- Location: "+city);
-                }else {
+                    System.out.println("2- Location: " + city);
+                } else {
                     System.out.println("No location found");
                 }
 
@@ -132,7 +182,7 @@ public class Mjob {
                     Element skillsElement = offerBody.select("p").get(1);
                     String skills = skillsElement.text();
                     System.out.println("Skills: " + skills);
-                }else{
+                } else {
                     System.out.println("No description or skills found");
                 }
 
@@ -146,7 +196,7 @@ public class Mjob {
                 if (voirplusElement != null) {
                     // Get the href attribute value
                     annonceLink = voirplusElement.attr("href"); //hrefvalue
-                    System.out.println("Niiice: " +annonceLink);
+                    System.out.println("Niiice: " + annonceLink);
 
                     Document document1 = Jsoup.connect(annonceLink).get();
 
@@ -170,20 +220,19 @@ public class Mjob {
                     Element otherInfos = document1.selectFirst("div.the-content");
 
 
-
                     // Safely check if the parent div exists
                     if (otherInfos != null) {
                         // Select all <div> elements within the parent
                         Elements divElements = otherInfos.select("div");
 
                         //first div containing company desc + avantages sociaux
-                        /**/Element companyDescription = divElements.get(0);
+                        /**/
+                        Element companyDescription = divElements.get(0);
 
 
                         // Select all <p> elements inside the sub-div
                         Elements paragraphs = companyDescription.select("p");
                         Elements listElements = companyDescription.select("ul > li");
-
 
 
                         // Define keywords to search for
@@ -247,11 +296,11 @@ public class Mjob {
                         System.out.println("8- Profile recherché: ");
                         for (int i = 0; i < paragraphs2.size(); i++) {
                             searchedProfile = paragraphs2.get(i).text();
-                            softskills = paragraphs2.get(i).text();
+                            posteAoccuper = paragraphs2.get(i).text();
                             System.out.println(searchedProfile);
                             for (String keyword : softSkillsKeywords) {
-                                if (softskills.toLowerCase().contains(keyword.toLowerCase())) {
-                                    System.out.println("-.-> " + softskills);
+                                if (posteAoccuper.toLowerCase().contains(keyword.toLowerCase())) {
+                                    System.out.println("-.-> " + posteAoccuper);
                                 }
                             }
                         }
@@ -283,10 +332,9 @@ public class Mjob {
                                 descriptionDentreprise = companyDescriptionText.text();
                                 System.out.println("9- Description d'entreprise: " + descriptionDentreprise);
 
-                            }
-                            else if (headingText.equals("Secteur(s) d'activité :")){
+                            } else if (headingText.equals("Secteur(s) d'activité :")) {
                                 Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
-                                
+
                                 assert activityAreaElement != null;
                                 secteur = activityAreaElement.text();
                                 System.out.println("10- ActivityArea: " + secteur);
@@ -296,23 +344,21 @@ public class Mjob {
                                 assert industryElement != null;
                                 industry = industryElement.text();
                                 System.out.println("11- Metier: " + industry);
-                                
+
                             } else if (headingText.equals("Niveau d'expériences requis :")) {
                                 Element requiredStudyYearsElement = heading.nextElementSibling();
 
                                 assert requiredStudyYearsElement != null;
                                 experienceYears = requiredStudyYearsElement.text();
-                                System.out.println("12- Niveau d'expériences requis: " +experienceYears);
-                            }
-                            else if (headingText.equals("Niveau d'études exigé :")) {
+                                System.out.println("12- Niveau d'expériences requis: " + experienceYears);
+                            } else if (headingText.equals("Niveau d'études exigé :")) {
                                 Element requiredStudyYearsElement = heading.nextElementSibling();
 
                                 assert requiredStudyYearsElement != null;
                                 StudyLevel = requiredStudyYearsElement.text();
-                                System.out.println("13- Niveau d'études exigé: " +StudyLevel);
+                                System.out.println("13- Niveau d'études exigé: " + StudyLevel);
 
-                            }
-                            else if (headingText.equals("Langue(s) exigée(s) :")) { // Replace with your target text
+                            } else if (headingText.equals("Langue(s) exigée(s) :")) { // Replace with your target text
                                 // Get the next sibling div after the <h3> element
                                 Element siblingDiv = heading.nextElementSibling();
 
@@ -331,73 +377,43 @@ public class Mjob {
                 } else {
                     System.out.println("Anchor link not found!");
                 }
-            }
 
+                Annonce annonce = pretraitement(id, title, searchedProfile, publishDate, secteur, experienceYears,
+                        StudyLevel, contractType, annonceLink, company_name, descriptionDentreprise, city, industry,
+                        posteAoccuper, langues, salary, avantagesSociaux);
+
+                listeAnnonce.add(annonce);
+            }
+            }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        return listeAnnonce;
     }
 
-    public static void main(String[] args) {
-        Mjob mjob = new Mjob();
-        mjob.mjobscrapping();
+    private Annonce pretraitement(int id,
+                                  String title, String searchedProfile, String publishDate,
+                                  String secteur, String experienceYears, String studyLevel,
+                                  String contractType, String annonceLink, String companyName,
+                                  String descriptionDentreprise, String city, String industry,
+                                  String softskills, String langues, String salary,
+                                  String avantagesSociaux
+                                    )
+    {
 
+        Annonce annonce = new Annonce();
+        annonce.setId(id);
+        annonce.setTitle(title);
+        annonce.setDescription(searchedProfile);
+        annonce.setStartDate(PretraitementAnnonceAttribut.convertToDate(publishDate));
+        annonce.setEndDate("");
+        annonce.setPostsNum(-1);
+        annonce.setSecteur(secteur);
 
-
-        // Database credentials
-        String url = "jdbc:mysql://localhost:3306/javaproject"; // Database URL
-        String username = "root"; // Your MySQL username
-        String password = ""; // Your MySQL password
-
-        // SQL query to insert data (with unused columns set to NULL)
-        /*String sql = "INSERT INTO annonce (title, city, publishDate, company_name, contractType, salary, secteur, industry, experienceYears, StudyLevel, langues, avantagesSociaux, searchedProfile, softskills, extraField1, extraField2) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NULL, NULL)";*/
-
-        String sql = "INSERT INTO annonce (`title`, `description`, `Secteur`, `Experience`, `EtudeLevel`, `ContratDetails`, `URL`, `Nom d'entreprise`, `Description d'entreprise`, `City`, `Industry`, `SoftSkills`, `Langue`, `Salaire`, `AvantagesSociaux`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        try {
-            // Connect to the database
-            Connection connection = DriverManager.getConnection(url, username, password);
-
-            // Create a prepared statement
-            PreparedStatement statement = connection.prepareStatement(sql);
-
-            // Set the values for the placeholders (?)
-            // Use data from the Mjob object
-            statement.setString(1, mjob.getTitle());                   // title
-            statement.setString(2, mjob.getSearchedProfile());         // description
-            statement.setString(3, mjob.getSecteur());                 // Secteur
-            statement.setString(4, mjob.getExperienceYears());         // Experience
-            statement.setString(5, mjob.getStudyLevel());              // EtudeLevel
-            statement.setString(6, mjob.getContractType());            // ContratDetails
-            statement.setString(7, mjob.getAnnonceLink());             // URL
-            statement.setString(8, mjob.getCompany_name());             // Nom d'entreprise
-            statement.setString(9, mjob.getDescriptionDentreprise());  // Description d'entreprise
-            statement.setString(10, mjob.getCity());                   // City
-            statement.setString(11, mjob.getIndustry());               // Industry
-            statement.setString(12, mjob.getSoftskills());             // SoftSkills
-            statement.setString(13, mjob.getLangues());                // Langue
-            statement.setString(14, mjob.getSalary());                 // Salaire
-            statement.setString(15, mjob.getAvantagesSociaux());       // AvantagesSociaux
-
-
-
-            // Execute the query
-            int rowsInserted = statement.executeUpdate();
-
-            // Check if the insertion was successful
-            if (rowsInserted > 0) {
-                System.out.println("Data inserted successfully!");
-            } else {
-                System.out.println("No rows were inserted.");
-            }
-
-            // Close the connection
-            connection.close();
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+        return annonce ;
     }
+
+
 }
