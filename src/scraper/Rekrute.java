@@ -54,8 +54,8 @@ public class Rekrute {
                 Document doc_of_link = Jsoup.connect(lien).get();
 
                 // Titre
-                String title = doc_of_link.select("title").first() != null ? 
-                               doc_of_link.select("title").first().text() : "Titre non trouvé";
+                String title = doc_of_link.select("title").first() != null ?
+                        doc_of_link.select("title").first().text() : "Titre non trouvé";
 
                 // SiteName 
                 String sitename = "Rekrute.com";
@@ -117,19 +117,19 @@ public class Rekrute {
                 Elements col_class = doc_of_link.select("div.col-md-12.blc");
 
                 for(Element div : col_class) {
-                	Element h2 = div.selectFirst("h2");
+                    Element h2 = div.selectFirst("h2");
                     if (h2 != null && h2.text().equals("Poste :")) {
-                    	String full_text = div.text();
-                    	int index = full_text.indexOf("Poste :");
-                    	if(index !=-1) {
-                    		fct_result = full_text.substring(index + "Poste :".length()).trim();
-                    	}
-                        break;  
+                        String full_text = div.text();
+                        int index = full_text.indexOf("Poste :");
+                        if(index !=-1) {
+                            fct_result = full_text.substring(index + "Poste :".length()).trim();
+                        }
+                        break;
                     }
                     else if (h2 != null && h2.text().trim().toLowerCase().equals("Profil recherché :")) {
                         // Select the <ul> under the current div
                         Element ul = div.selectFirst("ul");
-                        
+
                         if (ul != null) {
                             // Extract the list items (li)
                             Elements liElements = ul.select("li");
@@ -139,7 +139,7 @@ public class Rekrute {
                             for (Element li : liElements) {
                                 cmptText.append(li.text()).append("\n");
                             }
-                            
+
                             // Trim any leading/trailing spaces and set the result
                             cmpt_result = cmptText.toString().trim();
                             cmpt_result = Jsoup.parse(cmpt_result).text();
@@ -160,8 +160,8 @@ public class Rekrute {
                 Element description = doc_of_link.select("meta[name=description]").first();
                 String desc = description != null ? description.attr("content") : "Description non trouvée";
                 String desc_text = Jsoup.parse(desc).text();
-                
-                
+
+
                 // Secteur et Industry
                 Element secteurElement = doc_of_link.selectFirst(".h2italic");
                 String[] title_span = secteurElement != null ? secteurElement.text().split("- Secteur") : new String[0];
@@ -181,7 +181,7 @@ public class Rekrute {
                 for (Element liste : ul_info) {
                     String titre = liste.attr("title");
                     if (titre.equals("Expérience requise")) experience = liste.text();
-                    else if (titre.equals("Région")) { 
+                    else if (titre.equals("Région")) {
                         poste = liste.select("b").text();
                         region = liste.text();
                         match_region = patregion.matcher(region);
@@ -237,11 +237,11 @@ public class Rekrute {
 
                 // Nom entreprise
                 String name = title.split("-")[2];
-                
+
                 // Adresse de l'entreprise 
                 Element adr_balise = doc_of_link.selectFirst("#address");
                 String adr_entr = adr_balise !=null ? adr_balise.text() : "";
-                
+
                 // Affichage des informations extraites
                 System.out.println("Titre : " + title);
                 System.out.println("Description : " + desc_text);
@@ -265,8 +265,8 @@ public class Rekrute {
                 System.out.println("Date de début de postulation :" +actualdate);
                 System.out.println("Dernière date de postulation : " + (datedelaipost != null ? datedelaipost : "Non spécifiée"));
                 System.out.println("----------");
-                
-                
+
+
 
             } catch (IOException e) {
                 e.printStackTrace();
