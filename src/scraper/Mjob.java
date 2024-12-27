@@ -16,6 +16,7 @@ public class Mjob {
     static public List<Annonce> listeAnnonce = new ArrayList<Annonce>();
     int id = 0;
     static String title;
+    static String skills;
     static String searchedProfile; //profile à recherché
     static String publishDate;
     static String secteur;
@@ -30,7 +31,6 @@ public class Mjob {
     static String posteAoccuper; //Poste à occuper
     static String langues;
     static String salary;
-    static String avantagesSociaux;
 
     public Mjob() {
     }
@@ -54,7 +54,6 @@ public class Mjob {
         Mjob.posteAoccuper = softskills;
         Mjob.langues = langues;
         Mjob.salary = salary;
-        Mjob.avantagesSociaux = avantagesSociaux;
     }
 
     public static String getTitle() {
@@ -117,9 +116,7 @@ public class Mjob {
         return salary;
     }
 
-    public static String getAvantagesSociaux() {
-        return avantagesSociaux;
-    }
+
 
     public String getMjob() {
         return mjob;
@@ -152,10 +149,15 @@ public class Mjob {
             }
             for(int j=0 ; j<Integer.parseInt(totalPages);j++ ){
 
+                mjob = "https://www.m-job.ma/recherche?page="+j;
+
+                document = Jsoup.connect(mjob).get();
+
                 Elements jobItems = document.select("div.offer-box");
 
                 for (Element jobItem : jobItems) {
                 id++;
+
                 System.out.println(id);
                 Element titleElement = jobItem.selectFirst("h3.offer-title");
                 if (titleElement != null) {
@@ -180,7 +182,7 @@ public class Mjob {
                 System.out.println("Description: " + description);*/
 
                     Element skillsElement = offerBody.select("p").get(1);
-                    String skills = skillsElement.text();
+                    skills = skillsElement.text();
                     System.out.println("Skills: " + skills);
                 } else {
                     System.out.println("No description or skills found");
@@ -188,8 +190,12 @@ public class Mjob {
 
                 Element publishDateElement = jobItem.selectFirst(".date-buttons");
                 if (publishDateElement != null) {
-                    publishDate = publishDateElement.text();
-                    System.out.println("3- Date de publication: " + publishDate);
+                    Element firstSpan = publishDateElement.selectFirst("span");
+                    if (firstSpan != null) {
+                        String spanContent = firstSpan.text();
+
+                        publishDate = spanContent;
+                    }
                 }
 
                 Element voirplusElement = jobItem.selectFirst("div.form-group > a");
@@ -225,98 +231,6 @@ public class Mjob {
                         // Select all <div> elements within the parent
                         Elements divElements = otherInfos.select("div");
 
-                        //first div containing company desc + avantages sociaux
-                        /**/
-                        Element companyDescription = divElements.get(0);
-
-
-                        // Select all <p> elements inside the sub-div
-                        Elements paragraphs = companyDescription.select("p");
-                        Elements listElements = companyDescription.select("ul > li");
-
-
-                        // Define keywords to search for
-                        Map<String, String> extractedData = new HashMap<>(); // Store data by keyword
-                        String[] keywords = {"Avantages sociaux", "AMO", "CNSS", "navettes", "rémunération"};
-
-                        // Check if list elements exist
-                        if (!listElements.isEmpty()) {
-                            System.out.println("Fetching data from <li> elements:");
-                            System.out.println("7- Avantages sociaux: ");
-                            for (Element listItem : listElements) {
-                                avantagesSociaux = listItem.text();
-                                for (String keyword : keywords) {
-                                    if (avantagesSociaux.toLowerCase().contains(keyword.toLowerCase())) { // Match keyword ignoring case
-                                        extractedData.put(keyword, extractedData.getOrDefault(keyword, "") + "\n" + avantagesSociaux);
-                                        System.out.println("-> " + avantagesSociaux);
-                                        break; // Stop checking this list item for other keywords
-                                    }
-                                }
-                                /*String listItemText = listItem.text();
-                                System.out.println("List Items: "+listItemText);*/
-                            }
-                        } else if (!paragraphs.isEmpty()) { // If <li> elements are not found, fetch <p> elements
-                            System.out.println("Fetching data from <p> elements:");
-                            System.out.println("7- Avantages sociaux: ");
-                            for (Element paragraph : paragraphs) {
-                                // Get the HTML of the paragraph and replace <br> tags with newline characters
-
-                                // Convert the processed HTML back to plain text
-                                avantagesSociaux = paragraph.html().replace("<br>", "\n");
-                                //avantagesSociaux = paragraph.text();
-                                for (String keyword : keywords) {
-                                    if (avantagesSociaux.toLowerCase().contains(keyword.toLowerCase())) { // Match keyword ignoring case
-                                        extractedData.put(keyword, avantagesSociaux); // Store matching avantagesSociaux
-                                        System.out.println("->" + avantagesSociaux);
-                                        break; // Stop checking other keywords for this paragraph
-                                    }
-                                }
-                                /*String paragraphText = paragraph.text();
-                                System.out.println(paragraphText);*/
-                            }
-                        } else {
-                            System.out.println("No <p> or <li> elements found.");
-                        }
-
-                        // Output extracted data
-                        /*for (String keyword : keywords) {
-                            if (extractedData.containsKey(keyword)) {
-                                System.out.println("-->" + keyword + ": " + extractedData.get(keyword));
-                            } else {
-                                System.out.println(keyword + ": Not found");
-                            }
-                        }*/
-
-
-                        String[] softSkillsKeywords = {"Capacité", "aisance", "excellente", "maîtrise", "communiquer", "écoute"};
-
-                        //2nd div containing searched profile
-                        Element profileRecherche = divElements.get(3);
-                        Elements paragraphs2 = profileRecherche.select("p");
-                        System.out.println("8- Profile recherché: ");
-                        for (int i = 0; i < paragraphs2.size(); i++) {
-                            searchedProfile = paragraphs2.get(i).text();
-                            posteAoccuper = paragraphs2.get(i).text();
-                            System.out.println(searchedProfile);
-                            for (String keyword : softSkillsKeywords) {
-                                if (posteAoccuper.toLowerCase().contains(keyword.toLowerCase())) {
-                                    System.out.println("-.-> " + posteAoccuper);
-                                }
-                            }
-                        }
-
-                        /*if (!paragraphs2.isEmpty()){
-                            System.out.println("<---->Soft skills:");
-                            for (Element myParagraph : paragraphs2) {
-                                String myParagraphText = myParagraph.text();
-                                for (String keyword : softSkillsKeywords) {
-                                    if (myParagraphText.toLowerCase().contains(keyword.toLowerCase())) {
-                                        System.out.println("-> " + myParagraphText);
-                                    }
-                                }
-                            }
-                        }*/
-
                         // Select all <h3> elements
                         Elements headings = otherInfos.select("h3.heading");
 
@@ -332,7 +246,23 @@ public class Mjob {
                                 descriptionDentreprise = companyDescriptionText.text();
                                 System.out.println("9- Description d'entreprise: " + descriptionDentreprise);
 
-                            } else if (headingText.equals("Secteur(s) d'activité :")) {
+                            } else if (headingText.equals("Profil recherché :")) {
+                                Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
+
+                                assert activityAreaElement != null;
+                                searchedProfile = activityAreaElement.text();
+                                System.out.println("10- searchedProfile: " + searchedProfile);
+
+                            }
+                            else if (headingText.equals("Poste à occuper :")) {
+                                Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
+
+                                assert activityAreaElement != null;
+                                posteAoccuper = activityAreaElement.text();
+                                System.out.println("10- posteAoccuper : " + posteAoccuper);
+
+                            }
+                            else if (headingText.equals("Secteur(s) d'activité :")) {
                                 Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
 
                                 assert activityAreaElement != null;
@@ -378,12 +308,13 @@ public class Mjob {
                     System.out.println("Anchor link not found!");
                 }
 
-                Annonce annonce = pretraitement(id, title, searchedProfile, publishDate, secteur, experienceYears,
+                Annonce annonce = pretraitement(id, title, skills, searchedProfile, publishDate, secteur, experienceYears,
                         StudyLevel, contractType, annonceLink, company_name, descriptionDentreprise, city, industry,
-                        posteAoccuper, langues, salary, avantagesSociaux);
+                        posteAoccuper, langues, salary);
 
                 listeAnnonce.add(annonce);
             }
+
             }
 
         } catch (IOException e) {
@@ -394,14 +325,16 @@ public class Mjob {
     }
 
     private Annonce pretraitement(int id,
-                                  String title, String searchedProfile, String publishDate,
+                                  String title, String skills, String searchedProfile, String publishDate,
                                   String secteur, String experienceYears, String studyLevel,
                                   String contractType, String annonceLink, String companyName,
                                   String descriptionDentreprise, String city, String industry,
-                                  String softskills, String langues, String salary,
-                                  String avantagesSociaux
+                                  String posteAoccuper, String langues, String salary
                                     )
     {
+
+        Map<String, List<String>> results = PretraitementAnnonceAttribut.parseTexts(searchedProfile, posteAoccuper, skills);
+
 
         Annonce annonce = new Annonce();
         annonce.setId(id);
@@ -411,9 +344,34 @@ public class Mjob {
         annonce.setEndDate("");
         annonce.setPostsNum(-1);
         annonce.setSecteur(secteur);
-
+        annonce.setFonction(PretraitementAnnonceAttribut.extracting_fonction(title , industry));///----------
+        annonce.setExperience(PretraitementAnnonceAttribut.convertExperienceKeywords(experienceYears));
+        annonce.setEtudeLevel(PretraitementAnnonceAttribut.standardizeEtudeLevelInput(studyLevel));
+        annonce.setContratDetails(contractType);
+        annonce.setUrl(annonceLink);
+        annonce.setSiteName("M-job");
+        annonce.setAdresseEntreprise(city);
+        annonce.setSiteWebEntreprise("");
+        annonce.setNomEntreprise(companyName);
+        annonce.setDescriptionEntreprise(descriptionDentreprise);
+        annonce.setRegion(PretraitementAnnonceAttribut.getRegionsFromVilles(city));
+        annonce.setCity(city);
+        annonce.setIndustry(industry);
+        annonce.setTraitsPersonnalite(results.get("Personality Traits").toString());//-----
+        annonce.setCompetencesRequises(results.get("Competencies").toString());//-----
+        annonce.setSoftSkills(results.get("Soft Skills").toString());//--------
+        annonce.setCompetencesRecommandees(results.get("Competencies").toString());
+        annonce.setLangue(langues);
+        annonce.setNiveauLangue("");
+        annonce.setSalaire(PretraitementAnnonceAttribut.transformerSalaire(salary));
+        annonce.setAvantagesSociaux(results.get("Social Benefits").toString());//---------
+        annonce.setTeletravail("");
         return annonce ;
+
+
     }
+
+
 
 
 }
