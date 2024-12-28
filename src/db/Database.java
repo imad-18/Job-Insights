@@ -3,7 +3,8 @@ package db;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import model.Annonce;
+import rmi_api.Annonce;
+
 
 public class Database {
 
@@ -62,6 +63,9 @@ public class Database {
 
 	// Method to retrieve all Annonce objects from the database
 	public List<Annonce> getAllAnnonces() throws SQLException {
+
+		System.out.println("getAllAnnonces call") ;
+
 		String query = "SELECT * FROM annonce";
 		List<Annonce> annonces = new ArrayList<>();
 

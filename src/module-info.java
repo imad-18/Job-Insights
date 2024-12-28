@@ -9,4 +9,6 @@ module job_insights {
     requires jdk.httpserver;
 	requires org.apache.commons.lang3;
     requires java.rmi;
+    requires rmi.api;
+
 }
