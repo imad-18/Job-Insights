@@ -1,24 +1,37 @@
 package data_analyse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Identifier {
-    private List<String> cities;
-    private List<String> sectors;
-    private List<String> siteName;
-    private List<String> langue;
+    public List<String> cities;
+    public List<String> sectors;
+    public List<String> etudeLevel;
+    public List<String> siteName;
+    public List<String> langue;
+    public List<String> Plus ;
+    public List<String> Identifiers ;
 
-    public Identifier(List<String> cities, List<String> sectors
-            , List<String> siteName, List<String> langue) {
+    public Identifier(List<String> cities, List<String> sectors , List<String> etudeLevel
+            , List<String> siteName, List<String> langue, List<String> Plus,List<String> Identifiers) {
         this.cities = cities;
         this.sectors = sectors;
+        this.etudeLevel = etudeLevel;
         this.siteName = siteName;
         this.langue = langue;
+        this.Plus = Plus;
+        this.Identifiers = Identifiers;
     }
 
+    //columns identifier
+    public String identifyIdentifiers(String[] tokens){
+        return contains(tokens,Identifiers);
+    }
+
+    //columns values identifiers
     public String identifyCity(String[] tokens) {
         return contains(tokens, cities);
     }
@@ -28,15 +41,15 @@ public class Identifier {
     }
 
     public String identifyExperience(String[] tokens) {
-        return contains(tokens,sectors);
+        return contains(tokens,cities);
     }
 
     public String identifyEtudeLevel(String[] tokens) {
-        return contains(tokens,sectors);
+        return contains(tokens,etudeLevel);
     }
 
     public String identifyCompetence(String[] tokens) {
-        return contains(tokens,sectors);
+        return contains(tokens,cities);
     }
 
     public String identifySiteName(String[] tokens) {
@@ -47,8 +60,13 @@ public class Identifier {
         return contains(tokens, langue);
     }
 
-    public salaire identifySalaire(String[] tokens) {
-        return containsSalaire(tokens);
+    public String identifySalaire(String[] tokens) {
+        return contains(tokens, Arrays.asList("salaire","Salaire"));
+    }
+
+    //pour les question de plus (les plus , les meilleurs , demandee , etc)
+    public Boolean identifyPlusSecteur(String[] tokens) {
+        return containsBoolean(tokens,Plus);
     }
 
     private String contains(String[] tokens, List<String> list) {
@@ -62,30 +80,16 @@ public class Identifier {
         return "none";
     }
 
-    private salaire containsSalaire(String[] tokens) {
-        // Regular expression pour le montant des salaire
-        String regex = "(\\d+(?:[\\.,]?\\d{1,2})?\\s?(€|USD|£|\\$)?|[\\$€£]?\\d+(?:[\\.,]?\\d{1,2})?)";
-        int salaire1 = 0 , salaire2 = 0;
-        int i = 0 ;
+    private Boolean containsBoolean(String[] tokens, List<String> list) {
         for (String token : tokens) {
-            if (token.contains("entre") && token.contains("et") && token.contains("salaire")) {
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(token);
-                while (matcher.find()) {
-                    if (i == 0) {
-                        salaire1 = Integer.parseInt(matcher.group(1).replaceAll("[^0-9]", ""));
-                        i++;
-                    } else if (i == 1) {
-                        salaire2 = Integer.parseInt(matcher.group(1).replaceAll("[^0-9]", ""));
-                    } else {
-                        break;
-                    }
+            for (String item : list) {
+                if (token.contains(item)) {
+                    return true;
                 }
-                salaire s = new salaire("Salaire", salaire1, salaire2);
-                return s;
             }
         }
-        return null;
+        return false;
     }
+
 }
 

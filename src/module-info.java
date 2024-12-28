@@ -7,4 +7,5 @@ module job_insights {
 	requires mysql.connector.j;
 	requires org.jfree.jfreechart;
 	requires org.apache.commons.lang3;
+    requires java.rmi;
 }

@@ -6,10 +6,26 @@
   <component name="ChangeListManager">
     <list default="true" id="97625314-bcac-4121-b34f-7b06f9610601" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/app/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/db/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/bin/db/Database.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/module-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/job_insights.iml" beforeDir="false" afterPath="$PROJECT_DIR$/job_insights.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/app/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/app/Main.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/Identifier.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/Identifier.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/ResultsDataHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/ResultsDataHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/model/Annonce.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/model/Annonce.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/module-info.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/scraper/Rekrute_scraper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/scraper/Rekrute_scraper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_analyse/Identifier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/Identifier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/data_analyse/ResultsDataHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/ResultsDataHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/db/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/model/Annonce.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/model/Annonce.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scraper/Rekrute_scraper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/Rekrute_scraper.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,6 +35,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -41,7 +58,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;git-widget-placeholder&quot;: &quot;data__analyse&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/najib/Downloads/gson-2.8.6-javadoc.jar&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/najib/Desktop/JavaFX/javafx.web.jar&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -73,7 +90,16 @@
       <workItem from="1734426387909" duration="5658000" />
       <workItem from="1734463783759" duration="2511000" />
       <workItem from="1734553386865" duration="375000" />
-      <workItem from="1734710596540" duration="18158000" />
+      <workItem from="1734710596540" duration="34696000" />
+      <workItem from="1734983729269" duration="37452000" />
+      <workItem from="1735152432674" duration="503000" />
+      <workItem from="1735153144016" duration="606000" />
+      <workItem from="1735154093578" duration="7022000" />
+      <workItem from="1735165130796" duration="11167000" />
+      <workItem from="1735301035707" duration="1127000" />
+      <workItem from="1735302509497" duration="2443000" />
+      <workItem from="1735307285711" duration="1550000" />
+      <workItem from="1735309084683" duration="678000" />
     </task>
     <servers />
   </component>
