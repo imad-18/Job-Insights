@@ -20,8 +20,12 @@ public class Sitemanager {
 
     public List<Annonce> Insert_mjob_annonces() throws SQLException {
 
-        Mjob mjob = new Mjob();
-        List<Annonce> annonces = mjob.mjobscrapping();
+        //Mjob mjob = new Mjob();
+        //List<Annonce> annonces = mjob.mjobscrapping();
+
+        emploiMA emp = new emploiMA();
+
+        List<Annonce> annonces = emp.emploiMAScrapping();
 
         System.out.println("Debut d'enregistrement des annonces from mjob website");
 

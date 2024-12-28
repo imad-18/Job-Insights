@@ -2,15 +2,12 @@ package scraper;
 
 import db.JobDAO;
 
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static db.JobDAO.loadKeywordsFromJson;
-
-public class PretraitementAnnonceAttribut {
+public class PretraitementMjob {
 
     //M_job
         //Date de publication

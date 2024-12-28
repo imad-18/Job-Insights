@@ -7,7 +7,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -333,20 +332,20 @@ public class Mjob {
                                     )
     {
 
-        Map<String, List<String>> results = PretraitementAnnonceAttribut.parseTexts(searchedProfile, posteAoccuper, skills);
+        Map<String, List<String>> results = PretraitementMjob.parseTexts(searchedProfile, posteAoccuper, skills);
 
 
         Annonce annonce = new Annonce();
         annonce.setId(id);
         annonce.setTitle(title);
         annonce.setDescription(searchedProfile);
-        annonce.setStartDate(PretraitementAnnonceAttribut.convertToDate(publishDate));
+        annonce.setStartDate(PretraitementMjob.convertToDate(publishDate));
         annonce.setEndDate("");
         annonce.setPostsNum(-1);
         annonce.setSecteur(secteur);
-        annonce.setFonction(PretraitementAnnonceAttribut.extracting_fonction(title , industry));///----------
-        annonce.setExperience(PretraitementAnnonceAttribut.convertExperienceKeywords(experienceYears));
-        annonce.setEtudeLevel(PretraitementAnnonceAttribut.standardizeEtudeLevelInput(studyLevel));
+        annonce.setFonction(PretraitementMjob.extracting_fonction(title , industry));///----------
+        annonce.setExperience(PretraitementMjob.convertExperienceKeywords(experienceYears));
+        annonce.setEtudeLevel(PretraitementMjob.standardizeEtudeLevelInput(studyLevel));
         annonce.setContratDetails(contractType);
         annonce.setUrl(annonceLink);
         annonce.setSiteName("M-job");
@@ -354,7 +353,7 @@ public class Mjob {
         annonce.setSiteWebEntreprise("");
         annonce.setNomEntreprise(companyName);
         annonce.setDescriptionEntreprise(descriptionDentreprise);
-        annonce.setRegion(PretraitementAnnonceAttribut.getRegionsFromVilles(city));
+        annonce.setRegion(PretraitementMjob.getRegionsFromVilles(city));
         annonce.setCity(city);
         annonce.setIndustry(industry);
         annonce.setTraitsPersonnalite(results.get("Personality Traits").toString());//-----
@@ -363,7 +362,7 @@ public class Mjob {
         annonce.setCompetencesRecommandees(results.get("Competencies").toString());
         annonce.setLangue(langues);
         annonce.setNiveauLangue("");
-        annonce.setSalaire(PretraitementAnnonceAttribut.transformerSalaire(salary));
+        annonce.setSalaire(PretraitementMjob.transformerSalaire(salary));
         annonce.setAvantagesSociaux(results.get("Social Benefits").toString());//---------
         annonce.setTeletravail("");
         return annonce ;
