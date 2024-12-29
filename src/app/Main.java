@@ -10,12 +10,12 @@ import org.apache.commons.lang3.tuple.Pair;
 
 public class Main {
 	public static void main(String[] args) {
-		String question = "quelles sont les offres dans le secteur d' Informatique" ;
+		String question = "quelles sont les competences necessaire dans la ville de Rabat" ;
 		NLPProcessor nlp = new NLPProcessor();
-		String[] tokens = nlp.tokenizeQuery(question);
+		String[] tokens = question.split("\\s+");
 		nlp.identifyIntent(tokens);
-		//Pair<String , Pair<ArrayList<Annonce>, ArrayList<Pair<String, Integer>>>> DataResponse = nlp.QuestionResponse();
-		//send DataResponse to front end for a response
+		Pair<String , Pair<ArrayList<Annonce>, ArrayList<Pair<String, Integer>>>> DataResponse = nlp.QuestionResponse();
+		
 	}
 	//public static Pair<String , Pair<ArrayList<Annonce>, ArrayList<Pair<String, Integer>>>> FrontResponse(String req){
 

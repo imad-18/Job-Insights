@@ -12,7 +12,7 @@ import model.Annonce;
 public class Database {
 
 	// Database connection details
-	private String url = "jdbc:mysql://localhost:3306/javaproject";
+	private String url = "jdbc:mysql://localhost:3306/job_insight";
 	private String user = "root";
 	private String password = "";
 
@@ -24,8 +24,8 @@ public class Database {
 
 			// La requête d'insertion
 			String insertQuery = "INSERT INTO annonce (id,title, description, StartDate, EndDate, PostsNum, Secteur, Fonction, Experience, EtudeLevel, "
-					+ "ContratDetails, URL, SiteName, `Adresse d'entreprise`, `Site web d'entreprise`, `Nom d'entreprise`, `Description d'entreprise`, "
-					+ "`Region`, `City`, Industry, TraitsPersonnalite, CompetencesRequises, SoftSkills, CompetencesRecommandees, Langue, NiveauLangue, "
+					+ "ContratDetails, URL, SiteName, adresseEntreprise , siteWebEntreprise , nomEntreprise , descriptionEntreprise, "
+					+ "Region, City, Industry, TraitsPersonnalite, CompetencesRequises, SoftSkills, CompetencesRecommandees, Langue, NiveauLangue, "
 					+ "Salaire, AvantagesSociaux, Teletravail) "
 					+ "VALUES (?, ?, STR_TO_DATE(REGEXP_REPLACE(?, '[.]', '/'), '%d/%m/%Y'), STR_TO_DATE(REGEXP_REPLACE(?, '[.]', '/'), '%d/%m/%Y'), "
 					+ "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?)";
@@ -140,10 +140,10 @@ public class Database {
 							resultSet.getString("ContratDetails"),
 							resultSet.getString("URL"),
 							resultSet.getString("SiteName"),
-							resultSet.getString("Adresse d'entreprise"),
-							resultSet.getString("Site web d'entreprise"),
-							resultSet.getString("Nom d'entreprise"),
-							resultSet.getString("Description d'entreprise"),
+							resultSet.getString("adresseEntreprise"),
+							resultSet.getString("siteWebEntreprise"),
+							resultSet.getString("nomEntreprise"),
+							resultSet.getString("descriptionEntreprise"),
 							resultSet.getString("Region"),
 							resultSet.getString("City"),
 							resultSet.getString("Industry"),
@@ -268,7 +268,7 @@ public class Database {
 			}
 		}
 		catch(Exception e) {
-			System.out.println("Selection failed");
+			System.out.println("Selection error failed");
 		}
 
 		try {
@@ -304,7 +304,7 @@ public class Database {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while(resultSet.next()){
 				if(i<4){
-					Pair<String,Integer> element = Pair.of(resultSet.getString(0),(int) ((resultSet.getInt(1)/TotalSize)*100));
+					Pair<String,Integer> element = Pair.of(resultSet.getString(1),(int) ((resultSet.getInt(2) / (double) TotalSize) * 100));
 					pairTable.add(element);
 					if(element.getLeft().contains(token)){
 						tokenParsed = true;
@@ -312,12 +312,12 @@ public class Database {
 				}
 				if(i==4){
 					if(tokenParsed){
-						Pair<String,Integer> element = Pair.of(resultSet.getString(0),(int) ((resultSet.getInt(1)/TotalSize)*100));
+						Pair<String,Integer> element = Pair.of(resultSet.getString(1),(int) ((resultSet.getInt(2) / (double) TotalSize) * 100));
 						pairTable.add(element);
 						break;
 					}
 					else{
-						tokenParsed = resultSet.getString(0).contains(token);
+						tokenParsed = resultSet.getString(1).contains(token);
 					}
 				}
 				i ++ ;
@@ -328,7 +328,7 @@ public class Database {
 			}
 		}
 		catch(Exception e) {
-			System.out.println("Selection failed");
+			System.out.println("Selection error 2 failed");
 		}
 
 		try {

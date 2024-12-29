@@ -16,14 +16,16 @@ public class NLPProcessor {
 	public NLPProcessor() {
 		tokenizer = SimpleTokenizer.INSTANCE;
 		this.Identifier = new Identifier(
-				Arrays.asList("Agadir", "Casablanca", "El Jadida", "Fes", "Ifrane", "Kenitra", "Marrakech", "Meknes", "Nador", "Oujda", "Rabat", "Sale", "Tangier", "Tétouan", "Tiznit", "Guercif"),
-				Arrays.asList("Agence pub", "Agroalimentaire", "Assurance", "Automobile", "Banque", "BTP", "Centre d'appel", "Chimie", "Communication", "Comptabilité", "Conseil", "Distribution", "Electro-mécanique", "Electronique", "Enseignement", "Energie", "Etudes", "Extraction", "Formation", "Gaz", "Génie Civil", "Hôtellerie", "Indifférent", "Informatique", "Marketing Direct", "Offshoring", "Papier", "Pharmacie", "Telecom", "Spatial"),
+				Arrays.asList("Agadir", "Casablanca", "ElJadida", "Fes", "Ifrane", "Kenitra", "Marrakech", "Meknes", "Nador", "Oujda", "Rabat", "Sale", "Tangier", "Tétouan", "Tiznit", "Guercif"),
+				Arrays.asList("Agence pub", "Agroalimentaire", "Assurance", "Automobile", "Banque", "BTP", "Centre d'appel", "Chimie", "Communication", "Comptabilité", "Conseil", "Distribution", "Electro-mécanique", "Electronique", "Enseignement", "Energie", "Etudes", "Extraction", "Formation", "Gaz", "Génie Civil", "Hôtellerie", "Indifférent", "Internet" , "Informatique", "Marketing Direct", "Offshoring", "Papier", "Pharmacie", "Telecom", "Spatial"),
 				Arrays.asList("Bac","Bac+1","Bac+2","Bac+3","Bac+4","Bac+5"),
-				Arrays.asList("emploi.ma","rekrute","m-job.ma"),
+				Arrays.asList("emploi","rekrute","m-job"),
 				Arrays.asList("Français","Anglais","Espagol","Allemand","Italien","Portugais","Chinois","Japonais","Arabe","Russe"),
 				Arrays.asList("Plus","plus","meilleur","Meilleur","Tendance","tendance","necessaire"),
-				Arrays.asList("competence","competences","fonctions","fonction","experience","experiences","secteur","Secteur","ville","Ville" +
-						"site","page")
+				Arrays.asList("competence","fonctions","fonction","experience","experiences","secteur","Secteur","ville","Ville",
+						"site","page","niveau","etudeLevel","education","salaire"),
+				Arrays.asList("7daydi"),
+				Arrays.asList("Ventes","Droit","Programmation","Commnication","Finance","Entrepreneuriat")
 		);
 	}
 
@@ -58,6 +60,9 @@ public class NLPProcessor {
 			if(identifier.equals("niveau") || identifier.equals("etudeLevel") || identifier.equals("education")){
 				identifier = "EtudeLevel";
 			}
+			if(identifier.equals("salaire")){
+				identifier = "Salaire";
+			}
 			Pair<String,String> pair = Pair.of("Column",identifier);
 			this.tableIdentifiers.add(pair);
 		}
@@ -71,7 +76,8 @@ public class NLPProcessor {
 		}
 
 		//Second Columns identification
-		String identifier2 = Identifier.identifyIdentifiers(tokens);
+		String identifier2 = Identifier.identifyIdentifiers2(tokens);
+		System.out.println(identifier2);
 		if (!identifier2.equals("none")) {
 			if(identifier2.equals("competence") || identifier2.equals("competences")){
 				identifier2 = "CompetencesRequises";
@@ -90,6 +96,12 @@ public class NLPProcessor {
 			}
 			if(identifier2.equals("secteur") || identifier2.equals("Secteur")){
 				identifier2 = "Secteur";
+			}
+			if(identifier2.equals("niveau") || identifier2.equals("etudeLevel") || identifier2.equals("education")){
+				identifier2 = "EtudeLevel";
+			}
+			if(identifier2.equals("salaire")){
+				identifier2 = "Salaire";
 			}
 			if(!identifier2.equals(identifier)){
 				Pair<String,String> pair = Pair.of("Column2",identifier2);
@@ -116,6 +128,7 @@ public class NLPProcessor {
 		//etudeLevel identifier
 		String etudeLevel = Identifier.identifyEtudeLevel(tokens);
 		if (!etudeLevel.equals("none")) {
+			System.out.println(etudeLevel);
 			Pair<String,String> pair = Pair.of("Values",etudeLevel);
 			this.tableIdentifiers.add(pair);
 		}
@@ -135,9 +148,20 @@ public class NLPProcessor {
 		}
 
 		//CompetenceRequise identifier
-		String competence = Identifier.identifyEtudeLevel(tokens);
+		String competence = Identifier.identifyCompetence(tokens);
 		if (!competence.equals("none")) {
 			Pair<String,String> pair = Pair.of("Values",competence);
+			this.tableIdentifiers.add(pair);
+		}
+		//salaireIdentifier
+		String salaire1 = Identifier.identifySalaire(tokens);
+		if (!salaire1.equals("none")) {
+			Pair<String,String> pair = Pair.of("Values",salaire1);
+			this.tableIdentifiers.add(pair);
+		}
+		String salaire2 = Identifier.identifySalaire2(tokens);
+		if (!salaire2.equals("none")) {
+			Pair<String,String> pair = Pair.of("Values",salaire2);
 			this.tableIdentifiers.add(pair);
 		}
 
@@ -172,6 +196,8 @@ public class NLPProcessor {
 					column = "SiteName";
 				}
 			}
+			Pair<String,String> pair = Pair.of("Column",column);
+			this.tableIdentifiers.add(pair);
 			data = 	backend.Data(column,value);
 			chart = backend.Chart(column,value);
 			int pourcentage = 0 ;
@@ -195,8 +221,9 @@ public class NLPProcessor {
 			ChatResponse = "Il se voit que vous voulez savoir les offres a propos de/du "+table.get(0).getRight()+" "+table.get(1).getRight()+
 					"Donc le pourcentage des offres dans ce "+table.get(0).getRight()+" est : "+pourcentage+" est vous aurez si desous un chart sur " +
 					"les "+table.get(0).getRight()+" demande dans le marche de travaille et les annonce a propos du "+table.get(0).getRight()+" "+table.get(1).getRight()+" :) .";
-		} else if (size == 4 && table.get(0).getLeft().equals("Column") && table.get(1).getLeft().equals("Requete")
-		&& table.get(2).getLeft().equals("Column2") && table.get(3).getLeft().equals("Values")) {
+		}
+		else if (size == 4 && table.get(0).getLeft().equals("Column") && table.get(1).getLeft().equals("Requete")
+			&& table.get(2).getLeft().equals("Column2") && table.get(3).getLeft().equals("Values")) {
 			if (table.get(1).getRight().equals("Plus")) {
 				data = backend.Data2(table.get(0).getRight(), table.get(2).getRight(), table.get(3).getRight());
 				chart = backend.Chart2(table.get(0).getRight(), table.get(2).getRight(), table.get(3).getRight());
