@@ -11,10 +11,9 @@ quelles sont les offres disponible dans le secteur ------- Done
 quelles sont les offres situe a la ville de ------- Done
 quelles sont les offres du site ------------- Done
 
-3. Column + Requete + values + values
+3. Column + values + values
 
-quelles sont les offres avec un salaire entre 100 et 200 drhm ----- LAST THING TO BE DEALT WITH SO THE NLP MODEL SHOULD BE
-GOOD TO GO
+quelles sont les offres avec un salaire entre 100 et 200 drhm ----- Done
 
 4. Column + Requete + Column2 + Values
 
@@ -23,8 +22,6 @@ quelles sont les competences les plus demande dans le secteur ---------- DONE
 quelles sont les fonctions les plus demande dans le secteur ----------------- DONE
 quelles sont les experience les plus demandes dans le secteur ------------- DONE
 
-//we will work on it after i deal with the Response of the third regex
-5. Column + Requete + ----- + et + ------ + dans le secteur --------
 
 
 

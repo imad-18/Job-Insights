@@ -7,13 +7,9 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="jsoup-1.18.3" level="project" />
+    <orderEntry type="module" module-name="rmi_api" />
     <orderEntry type="library" name="jfreechart-1.5.3 (1)" level="project" />
-    <orderEntry type="library" name="mysql-connector-j-9.1.0" level="project" />
-    <orderEntry type="library" name="Documents" level="project" />
-    <orderEntry type="library" name="commons-lang3-3.12.0" level="project" />
-    <orderEntry type="library" name="slf4j-simple-2.0.7" level="project" />
     <orderEntry type="library" name="lib" level="project" />
-    <orderEntry type="module" module-name="rmi_api1" />
+    <orderEntry type="library" name="lib1" level="project" />
   </component>
 </module>

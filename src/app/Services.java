@@ -1,12 +1,16 @@
 package app;
 
+import data_analyse.NLPProcessor;
 import db.Database;
+import org.apache.commons.lang3.tuple.Pair;
+import rmi_api.Annonce;
 import rmi_api.BodyResponse;
 import rmi_api.ResponseRMI;
 import rmi_api.ServicesAPI;
 
 import java.rmi.RemoteException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Services implements ServicesAPI {
 
@@ -21,11 +25,24 @@ public class Services implements ServicesAPI {
     }
 
     @Override
-    public ResponseRMI processUserQuery(String userQuery) throws RemoteException {
+    public ResponseRMI processUserQuery(String userQuery) throws RemoteException, SQLException {
         //Npl
         //
+        NLPProcessor nlp = new NLPProcessor();
 
-        return response;
+        String[] tokens = userQuery.split("\\s+");
+
+        nlp.identifyIntent(tokens);
+
+        Pair<String , Pair<ArrayList<Annonce>, ArrayList<Pair<String, Integer>>>> DataResponse = nlp.QuestionResponse();
+
+        response.body.chatbootResp = DataResponse.getLeft();
+
+        response.body.annonceList = DataResponse.getRight().getLeft();
+
+        response.body.Statistics = null ;
+
+        return response ;
     }
 
     @Override

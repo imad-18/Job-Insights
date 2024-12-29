@@ -3,12 +3,19 @@ package db;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.apache.commons.lang3.tuple.Pair;
 import rmi_api.Annonce;
 
 
 public class Database {
 
 	private Connection connection;
+
+	private String url = "jdbc:mysql://localhost:3306/job_insight";
+	private String user = "root";
+	private String password = "";
+
 
 	// Constructor to initialize the database connection
 	public Database(String dbUrl, String username, String password) throws SQLException {
@@ -150,6 +157,430 @@ public class Database {
 			stmt.setInt(29, annonce.getId());
 			stmt.executeUpdate();
 		}
+	}
+
+	//LA TAILLE DE LA BASE DE DONNES
+	public int DBsize(){
+		int i = 0 ;
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT COUNT(*) FROM annonce";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				i = resultSet.getInt(1);
+				break;
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return i;
+	}
+
+	//1st Case
+
+	//SELECTION DE LA BASE AVEC UNE CONDITION SUR UNE DES COLOGNE
+	public ArrayList<Annonce> SelectedData(String attribut , String token){
+		ArrayList<Annonce> a = new ArrayList<Annonce>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT * FROM annonce WHERE "+attribut+" LIKE ?";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%" + token + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				//ERREUR C EST JUSTE A CAUSE DU CHANGEMENT DE LA BASE DE DONNES
+				Annonce test = new Annonce(resultSet.getInt(1),
+						resultSet.getString(2),
+						resultSet.getString(3),
+						resultSet.getString(4),
+						resultSet.getString(5),
+						resultSet.getInt(6),
+						resultSet.getString(7),
+						resultSet.getString(8),
+						resultSet.getString(9),
+						resultSet.getString(10),
+						resultSet.getString(11),
+						resultSet.getString(12),
+						resultSet.getString(13),
+						resultSet.getString(14),
+						resultSet.getString(15),
+						resultSet.getString(16),
+						resultSet.getString(17),
+						resultSet.getString(18),
+						resultSet.getString(19),
+						resultSet.getString(20),
+						resultSet.getString(21),
+						resultSet.getString(22),
+						resultSet.getString(23),
+						resultSet.getString(24),
+						resultSet.getString(25),
+						resultSet.getString(26),
+						resultSet.getString(27),
+						resultSet.getString(28),
+						resultSet.getString(29));
+				a.add(test);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection error failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return a;
+	}
+
+	//SELECTION DE LA BASE POUR LES DIAGRAMMES JFREECHART
+	public ArrayList<Pair<String,Integer>> CountSelection(String attribut , String token){
+		Boolean tokenParsed = false;
+		int i = 0 ;
+		int TotalSize = DBsize();
+		ArrayList<Pair<String,Integer>> pairTable = new ArrayList<Pair<String,Integer>>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT "+attribut+" , COUNT(*) as row_count FROM annonce GROUP BY "+attribut+" ORDER BY row_count DESC";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				if(i<4){
+					Pair<String,Integer> element = Pair.of(resultSet.getString(1),(int) ((resultSet.getInt(2) / (double) TotalSize) * 100));
+					pairTable.add(element);
+					if(element.getLeft().contains(token)){
+						tokenParsed = true;
+					}
+				}
+				if(i==4){
+					if(tokenParsed){
+						Pair<String,Integer> element = Pair.of(resultSet.getString(1),(int) ((resultSet.getInt(2) / (double) TotalSize) * 100));
+						pairTable.add(element);
+						break;
+					}
+					else{
+						tokenParsed = resultSet.getString(1).contains(token);
+					}
+				}
+				i ++ ;
+			}
+			if(pairTable.size() < 5){
+				Pair<String,Integer> element = Pair.of(token,0);
+				pairTable.add(element);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection error 2 failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return pairTable;
+	}
+
+	//2nd Case
+
+	//SELECTION DE LA BASE AVEC UNE CONDITION SUR UNE DES COLOGNE
+	public ArrayList<Annonce> SelectedData2(String column , String attribut , String token){
+		ArrayList<Annonce> a = new ArrayList<Annonce>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT * FROM annonce WHERE "+attribut+" LIKE ?";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%" + token + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				Annonce test = new Annonce(
+						resultSet.getInt("id"),
+						resultSet.getString("title"),
+						resultSet.getString("description"),
+						resultSet.getString("StartDate"),
+						resultSet.getString("EndDate"),
+						resultSet.getInt("PostsNum"),
+						resultSet.getString("Secteur"),
+						resultSet.getString("Fonction"),
+						resultSet.getString("Experience"),
+						resultSet.getString("EtudeLevel"),
+						resultSet.getString("ContratDetails"),
+						resultSet.getString("URL"),
+						resultSet.getString("SiteName"),
+						resultSet.getString("Adresse d'entreprise"),
+						resultSet.getString("Site web d'entreprise"),
+						resultSet.getString("Nom d'entreprise"),
+						resultSet.getString("Description d'entreprise"),
+						resultSet.getString("Region"),
+						resultSet.getString("City"),
+						resultSet.getString("Industry"),
+						resultSet.getString("TraitsPersonnalite"),
+						resultSet.getString("CompetencesRequises"),
+						resultSet.getString("SoftSkills"),
+						resultSet.getString("CompetencesRecommandees"),
+						resultSet.getString("Langue"),
+						resultSet.getString("NiveauLangue"),
+						resultSet.getString("Salaire"),
+						resultSet.getString("AvantagesSociaux"),
+						resultSet.getString("Teletravail")
+				);
+				a.add(test);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return a;
+	}
+
+	//SELECTION DE LA BASE POUR LES DIAGRAMMES JFREECHART
+	public ArrayList<Pair<String,Integer>> CountSelection2(String Column , String attribut , String token){
+		Boolean tokenParsed = false;
+		int i = 0 ;
+		int TotalSize = DBsize();
+		ArrayList<Pair<String,Integer>> pairTable = new ArrayList<Pair<String,Integer>>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT "+Column+" , COUNT(*) as row_count FROM annonce WHERE "+attribut+" LIKE ? "+token+"GROUP BY "+Column+" ORDER BY row_count DESC";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				if(i<4){
+					Pair<String,Integer> element = Pair.of(resultSet.getString(0),(int) ((resultSet.getInt(1)/TotalSize)*100));
+					pairTable.add(element);
+					if(element.getLeft().contains(token)){
+						tokenParsed = true;
+					}
+				}
+				if(i==4){
+					if(tokenParsed){
+						Pair<String,Integer> element = Pair.of(resultSet.getString(0),(int) ((resultSet.getInt(1)/TotalSize)*100));
+						pairTable.add(element);
+						break;
+					}
+					else{
+						tokenParsed = resultSet.getString(0).contains(token);
+					}
+				}
+				i ++ ;
+			}
+			if(pairTable.size() < 5){
+				Pair<String,Integer> element = Pair.of(token,0);
+				pairTable.add(element);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return pairTable;
+	}
+
+	//3rd Case
+
+	//SELECTION DE LA BASE AVEC UNE CONDITION SUR UNE DES COLOGNE
+	public ArrayList<Annonce> SelectedData3(String column , String attribut , String token){
+		ArrayList<Annonce> a = new ArrayList<Annonce>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT * FROM annonce WHERE "+attribut+" LIKE ?";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			preparedStatement.setString(1, "%" + token + "%");
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				Annonce test = new Annonce(
+						resultSet.getInt("id"),
+						resultSet.getString("title"),
+						resultSet.getString("description"),
+						resultSet.getString("StartDate"),
+						resultSet.getString("EndDate"),
+						resultSet.getInt("PostsNum"),
+						resultSet.getString("Secteur"),
+						resultSet.getString("Fonction"),
+						resultSet.getString("Experience"),
+						resultSet.getString("EtudeLevel"),
+						resultSet.getString("ContratDetails"),
+						resultSet.getString("URL"),
+						resultSet.getString("SiteName"),
+						resultSet.getString("Adresse d'entreprise"),
+						resultSet.getString("Site web d'entreprise"),
+						resultSet.getString("Nom d'entreprise"),
+						resultSet.getString("Description d'entreprise"),
+						resultSet.getString("Region"),
+						resultSet.getString("City"),
+						resultSet.getString("Industry"),
+						resultSet.getString("TraitsPersonnalite"),
+						resultSet.getString("CompetencesRequises"),
+						resultSet.getString("SoftSkills"),
+						resultSet.getString("CompetencesRecommandees"),
+						resultSet.getString("Langue"),
+						resultSet.getString("NiveauLangue"),
+						resultSet.getString("Salaire"),
+						resultSet.getString("AvantagesSociaux"),
+						resultSet.getString("Teletravail")
+				);
+				a.add(test);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return a;
+	}
+
+	//SELECTION DE LA BASE POUR LES DIAGRAMMES JFREECHART
+	public ArrayList<Pair<String,Integer>> CountSelection3(String Column , String attribut , String token){
+		Boolean tokenParsed = false;
+		int i = 0 ;
+		int TotalSize = DBsize();
+		ArrayList<Pair<String,Integer>> pairTable = new ArrayList<Pair<String,Integer>>();
+		Connection connection = null;
+		PreparedStatement preparedStatement = null;
+		String query = "SELECT "+Column+" , COUNT(*) as row_count FROM annonce WHERE "+attribut+" LIKE ? "+token+"GROUP BY "+Column+" ORDER BY row_count DESC";
+		try {
+			Class.forName("com.mysql.cj.jdbc.Driver");
+
+			connection = DriverManager.getConnection(url,user,password);
+			System.out.println("Connected to the database!");
+
+
+		}catch(Exception e){
+			System.out.println("Connection failed");
+		}
+		try {
+			preparedStatement = connection.prepareStatement(query);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while(resultSet.next()){
+				if(i<4){
+					Pair<String,Integer> element = Pair.of(resultSet.getString(0),(int) ((resultSet.getInt(1)/TotalSize)*100));
+					pairTable.add(element);
+					if(element.getLeft().contains(token)){
+						tokenParsed = true;
+					}
+				}
+				if(i==4){
+					if(tokenParsed){
+						Pair<String,Integer> element = Pair.of(resultSet.getString(0),(int) ((resultSet.getInt(1)/TotalSize)*100));
+						pairTable.add(element);
+						break;
+					}
+					else{
+						tokenParsed = resultSet.getString(0).contains(token);
+					}
+				}
+				i ++ ;
+			}
+			if(pairTable.size() < 5){
+				Pair<String,Integer> element = Pair.of(token,0);
+				pairTable.add(element);
+			}
+		}
+		catch(Exception e) {
+			System.out.println("Selection failed");
+		}
+
+		try {
+			if (preparedStatement != null) preparedStatement.close();
+			if (connection != null) connection.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+		return pairTable;
 	}
 
 	// Close the database connection

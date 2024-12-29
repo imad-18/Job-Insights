@@ -1,9 +1,10 @@
 package data_analyse;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import model.Annonce;
+import rmi_api.Annonce;
 import opennlp.tools.tokenize.SimpleTokenizer;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -169,7 +170,7 @@ public class NLPProcessor {
 	}
 
 	//intents association with database
-	public Pair<String,Pair<ArrayList<Annonce>,ArrayList<Pair<String, Integer>>>> QuestionResponse(){
+	public Pair<String,Pair<ArrayList<Annonce>,ArrayList<Pair<String, Integer>>>> QuestionResponse() throws SQLException {
 		ResultsDataHandler backend = new ResultsDataHandler();
 		//Les donnes a rendre au front end
 		ArrayList<Annonce> data =  new ArrayList<Annonce>();

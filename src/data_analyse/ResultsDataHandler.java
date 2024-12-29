@@ -1,22 +1,33 @@
 package data_analyse;
 
 import db.Database;
-import model.Annonce;
+import rmi_api.Annonce;
 import org.apache.commons.lang3.tuple.Pair;
+
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class ResultsDataHandler {
+    String url = "jdbc:mysql://localhost:3306/job_insight";
+    String user = "root";
+    String password = "";
+    Database b = new Database(url,user,password);
+
+    public ResultsDataHandler() throws SQLException {
+    }
+
 
     //1st case
 
-    public ArrayList<Annonce> Data(String Column, String Values) {
-        Database b = new Database();
+    public ArrayList<Annonce> Data(String Column, String Values) throws SQLException {
+
         ArrayList<Annonce> dataList = b.SelectedData(Column,Values);
         return dataList ;
     }
 
-    public ArrayList<Pair<String, Integer>> Chart(String type, String key1) {
-        Database b = new Database();
+    public ArrayList<Pair<String, Integer>> Chart(String type, String key1) throws SQLException {
+
+
         ArrayList<Pair<String,Integer>> json = b.CountSelection(type,key1);
         int Rest = 100 - (int) (json.get(0).getRight()+json.get(1).getRight()+json.get(2).getRight()
                 +json.get(3).getRight()+json.get(4).getRight());
@@ -30,13 +41,11 @@ public class ResultsDataHandler {
     //2nd case
 
     public ArrayList<Annonce> Data2(String Column ,String Column1 , String Values) {
-        Database b = new Database();
         ArrayList<Annonce> dataList = b.SelectedData2(Column,Column1,Values);
         return dataList ;
     }
 
     public ArrayList<Pair<String, Integer>> Chart2(String type, String type1 , String key1) {
-        Database b = new Database();
         ArrayList<Pair<String,Integer>> json = b.CountSelection2(type,type1,key1);
         int Reste = 100 - (int) (json.get(0).getRight()+json.get(1).getRight()+json.get(2).getRight()
                 +json.get(3).getRight()+json.get(4).getRight());
