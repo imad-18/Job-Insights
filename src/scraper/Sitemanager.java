@@ -1,7 +1,7 @@
 package scraper;
 
 import db.Database;
-import model.Annonce;
+import rmi_api.Annonce;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -21,24 +21,24 @@ public class Sitemanager {
 
     public List<Annonce> Insert_mjob_annonces() throws SQLException {
 
-        //Mjob mjob = new Mjob();
-        //List<Annonce> MajobAnnonces = mjob.mjobscrapping();
+        /*Mjob mjob = new Mjob();
+        List<model.Annonce> MajobAnnonces = mjob.mjobscrapping();
 
         Rekrute_scraper rekruteScraper = new Rekrute_scraper();
 
         rekruteScraper.ScraperRekrute();
 
-        List<Annonce> RecruteAnnonces = rekruteScraper.getListeAnnonce();
+        ArrayList<model.Annonce> RecruteAnnonces = rekruteScraper.getListeAnnonce();
 
-        //emploiMA emp = new emploiMA();
+        emploiMA emp = new emploiMA();
 
-        //List<Annonce> emploiMAnnonces = emp.emploiMAScrapping();
+        List<model.Annonce> emploiMAnnonces = emp.emploiMAScrapping();*/
 
         List<Annonce> annonces = new ArrayList<Annonce>();
 
         //annonces.addAll(emploiMAnnonces);
         //annonces.addAll(MajobAnnonces);
-        annonces.addAll(RecruteAnnonces);
+        //annonces.addAll(RecruteAnnonces);
 
         System.out.println("Debut d'enregistrement des annonces from mjob website");
 
