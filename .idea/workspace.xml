@@ -4,24 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242c11fa-0c7d-4117-b42a-ff4dcddf2002" name="Changes" comment="init to work master">
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/job_insights.iml" beforeDir="false" afterPath="$PROJECT_DIR$/job_insights.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/app/Services.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/app/Services.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NLPProcessor.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api/module-info.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api/rmi_api/Annonce.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api/rmi_api/BodyResponse.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api/rmi_api/ResponseRMI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api/rmi_api/ServicesAPI.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api1/rmi_api.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/rmi_api1/rmi_api1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/rmi_api1/rmi_api1.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/app/Services.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Services.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/data_analyse/NLPProcessor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/db/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/Database.java" afterDir="false" />
-    </list>
+    <list default="true" id="242c11fa-0c7d-4117-b42a-ff4dcddf2002" name="Changes" comment="that't work but s need developpement" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -114,6 +97,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init to work master" />
-    <option name="LAST_COMMIT_MESSAGE" value="init to work master" />
+    <MESSAGE value="that't work but s need developpement" />
+    <option name="LAST_COMMIT_MESSAGE" value="that't work but s need developpement" />
   </component>
 </project>
