@@ -203,37 +203,31 @@ public class NLPProcessor {
 			chart = backend.Chart(column,value);
 			int pourcentage = 0 ;
 			for(Pair<String , Integer> item : chart){
-				if(item.getLeft() == table.get(0).getLeft()){
+				if(item.getLeft().contains(table.get(0).getRight())){
 					pourcentage = item.getRight();
 				}
 			}
 			ChatResponse = "Il se voit que vous voulez savoir les offres a propos de/du "+table.get(0).getRight()+" "+table.get(1).getRight()+
-					"Donc le pourcentage des offres dans ce "+table.get(0).getRight()+" est : "+pourcentage+" est vous aurez si desous un chart sur " +
+					"Donc le pourcentage des offres dans ce "+table.get(0).getRight()+" est : "+pourcentage+"% est vous aurez si desous un chart sur " +
 					"les "+table.get(0).getRight()+" demande dans le marche de travaille et les annonce a propos du "+table.get(0).getRight()+" "+table.get(1).getRight()+" :) .";
 		} else if(size == 2 && table.get(0).getLeft().equals("Column") && table.get(1).getLeft().equals("Values")){
 			data = backend.Data(table.get(0).getRight() , table.get(1).getRight());
 			chart = backend.Chart(table.get(0).getRight() , table.get(1).getRight());
 			int pourcentage = 0 ;
 			for(Pair<String , Integer> item : chart){
-				if(item.getLeft() == table.get(0).getLeft()){
+				if(item.getLeft().contains(table.get(1).getRight())){
 					pourcentage = item.getRight();
 				}
 			}
 			ChatResponse = "Il se voit que vous voulez savoir les offres a propos de/du "+table.get(0).getRight()+" "+table.get(1).getRight()+
-					"Donc le pourcentage des offres dans ce "+table.get(0).getRight()+" est : "+pourcentage+" est vous aurez si desous un chart sur " +
+					"Donc le pourcentage des offres dans ce "+table.get(0).getRight()+" est : "+pourcentage+"% est vous aurez si desous un chart sur " +
 					"les "+table.get(0).getRight()+" demande dans le marche de travaille et les annonce a propos du "+table.get(0).getRight()+" "+table.get(1).getRight()+" :) .";
 		}
 		else if (size == 4 && table.get(0).getLeft().equals("Column") && table.get(1).getLeft().equals("Requete")
-			&& table.get(2).getLeft().equals("Column2") && table.get(3).getLeft().equals("Values")) {
+				&& table.get(2).getLeft().equals("Column2") && table.get(3).getLeft().equals("Values")) {
 			if (table.get(1).getRight().equals("Plus")) {
 				data = backend.Data2(table.get(0).getRight(), table.get(2).getRight(), table.get(3).getRight());
 				chart = backend.Chart2(table.get(0).getRight(), table.get(2).getRight(), table.get(3).getRight());
-				int pourcentage = 0 ;
-				for(Pair<String , Integer> item : chart){
-					if(item.getLeft() == table.get(0).getLeft()){
-						pourcentage = item.getRight();
-					}
-				}
 				ChatResponse = "Il se voit que vous voulez savoir les "+table.get(0).getRight()+" les plus demande dans le "+table.get(2).getRight()+" "+ table.get(3).getRight()+
 						" Vous aurez si desous un chart qui demontre les "+table.get(0).getRight()+" les plus demande dans "+table.get(2).getRight()+" "+ table.get(3).getRight()+
 						"est Par analyse de data en vois que c'est "+chart.get(0).getLeft()+"qui est plus demande :) .";

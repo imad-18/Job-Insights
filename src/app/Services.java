@@ -40,7 +40,7 @@ public class Services implements ServicesAPI {
 
         response.body.annonceList = DataResponse.getRight().getLeft();
 
-        response.body.Statistics = null ;
+        response.body.Statistics = DataResponse.getRight().getRight() ;
 
         return response ;
     }
