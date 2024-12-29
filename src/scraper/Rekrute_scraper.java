@@ -72,8 +72,8 @@ public class Rekrute_scraper {
 		                String Experience = phase3 [1];
 		                String NiveauEtude = phase4 [1];
 		                String Contract = phase5 [1];
-		                listeAnnonce.add(new Annonce(i,jobTitle,jobLocation,jobDescription,jobDateS,jobDateE,jobN,Secteur,Fonction,Experience
-		                		,NiveauEtude,Contract));
+		                //listeAnnonce.add(new Annonce(i,jobTitle,jobLocation,jobDescription,jobDateS,jobDateE,jobN,Secteur,Fonction,Experience
+		                		//,NiveauEtude,Contract));
 		                i++;
 		            }
 		        }catch (Exception e) {
@@ -134,8 +134,8 @@ public class Rekrute_scraper {
 	        		String dateE = "30/12/2024";
 	        		int dateN = 0;
 	        		String Secteur = Fonction;	
-	        		listeAnnonce.add(new Annonce(i,title,Location,Description,dateS,dateE,dateN,Secteur,Fonction,Experience
-	                		,NiveauEtude,Contrat));
+	        		//listeAnnonce.add(new Annonce(i,title,Location,Description,dateS,dateE,dateN,Secteur,Fonction,Experience
+	                		//,NiveauEtude,Contrat));
 	                i++;
 	        	}
 			}
@@ -148,7 +148,6 @@ public class Rekrute_scraper {
 	        for (Annonce item : listeAnnonce) {
 	        	System.out.println("---------------------------------------Offre d emploi-------------------------------");
 	        	System.out.println("Job Title: " + item.getTitle());
-	        	System.out.println("Job Location: " + item.getLocation());
 	        	System.out.println("Job Description: " + item.getDescription());
 	        	System.out.println("Job Offer starts : " +item.getStartDate() + " Ends in : " + item.getEndDate());
 	        	System.out.println("le nombre de postes : " + item.getPostsNum());

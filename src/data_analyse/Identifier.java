@@ -1,24 +1,46 @@
 package data_analyse;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Identifier {
-    private List<String> cities;
-    private List<String> sectors;
-    private List<String> siteName;
-    private List<String> langue;
+    public List<String> cities;
+    public List<String> sectors;
+    public List<String> etudeLevel;
+    public List<String> siteName;
+    public List<String> langue;
+    public List<String> Plus ;
+    public List<String> Identifiers ;
+    public List<String> experience;
+    public List<String> competence;
 
-    public Identifier(List<String> cities, List<String> sectors
-            , List<String> siteName, List<String> langue) {
+
+    public Identifier(List<String> cities, List<String> sectors , List<String> etudeLevel
+            , List<String> siteName, List<String> langue, List<String> Plus,List<String> Identifiers
+            ,List<String> experience,List<String> competence) {
         this.cities = cities;
         this.sectors = sectors;
+        this.etudeLevel = etudeLevel;
         this.siteName = siteName;
         this.langue = langue;
+        this.Plus = Plus;
+        this.Identifiers = Identifiers;
+        this.experience = experience;
+        this.competence = competence;
     }
 
+    //columns identifier
+    public String identifyIdentifiers2(String[] tokens){
+        return contains2(tokens,Identifiers);
+    }
+    public String identifyIdentifiers(String[] tokens){
+        return contains(tokens,Identifiers);
+    }
+
+    //columns values identifiers
     public String identifyCity(String[] tokens) {
         return contains(tokens, cities);
     }
@@ -28,15 +50,15 @@ public class Identifier {
     }
 
     public String identifyExperience(String[] tokens) {
-        return contains(tokens,sectors);
+        return contains(tokens,experience);
     }
 
     public String identifyEtudeLevel(String[] tokens) {
-        return contains(tokens,sectors);
+        return contains3(tokens,etudeLevel);
     }
 
     public String identifyCompetence(String[] tokens) {
-        return contains(tokens,sectors);
+        return contains(tokens,competence);
     }
 
     public String identifySiteName(String[] tokens) {
@@ -47,10 +69,42 @@ public class Identifier {
         return contains(tokens, langue);
     }
 
-    public salaire identifySalaire(String[] tokens) {
-        return containsSalaire(tokens);
+    public String identifySalaire(String[] tokens) {
+        return salaire(tokens);
+    }
+    
+    public String identifySalaire2(String[] tokens) {
+        return salaire2(tokens);
     }
 
+    //pour les question de plus (les plus , les meilleurs , demandee , etc)
+    public Boolean identifyPlusSecteur(String[] tokens) {
+        return containsBoolean(tokens,Plus);
+    }
+    
+    private String salaire(String[] tokens) {
+    	for (String token : tokens) {
+            if (token.matches("-?\\d+")) {
+                return token;
+            }
+        }
+        return "none";
+    };
+
+    private String salaire2(String[] tokens) {
+    	int i=0;
+    	for (String token : tokens) {
+            if (token.matches("-?\\d+")) {
+            	if(i == 0) {
+            		i++;
+            	}else {
+            		return token;
+            	}  
+            }
+        }
+        return "none";
+    };
+    
     private String contains(String[] tokens, List<String> list) {
         for (String token : tokens) {
             for (String item : list) {
@@ -61,31 +115,60 @@ public class Identifier {
         }
         return "none";
     }
-
-    private salaire containsSalaire(String[] tokens) {
-        // Regular expression pour le montant des salaire
-        String regex = "(\\d+(?:[\\.,]?\\d{1,2})?\\s?(€|USD|£|\\$)?|[\\$€£]?\\d+(?:[\\.,]?\\d{1,2})?)";
-        int salaire1 = 0 , salaire2 = 0;
-        int i = 0 ;
+    
+    private String contains2(String[] tokens, List<String> list) {
+    	int i=0;
         for (String token : tokens) {
-            if (token.contains("entre") && token.contains("et") && token.contains("salaire")) {
-                Pattern pattern = Pattern.compile(regex);
-                Matcher matcher = pattern.matcher(token);
-                while (matcher.find()) {
-                    if (i == 0) {
-                        salaire1 = Integer.parseInt(matcher.group(1).replaceAll("[^0-9]", ""));
-                        i++;
-                    } else if (i == 1) {
-                        salaire2 = Integer.parseInt(matcher.group(1).replaceAll("[^0-9]", ""));
-                    } else {
-                        break;
-                    }
+            for (String item : list) {
+                if (token.contains(item)) {
+                	if(i==0){
+                		i++;
+                	}else {
+                		return item;
+                	}
                 }
-                salaire s = new salaire("Salaire", salaire1, salaire2);
-                return s;
             }
         }
-        return null;
+        return "none";
     }
+    
+    private String contains3(String[] tokens, List<String> list) {
+        for (String token : tokens) {
+            for (String item : list) {
+                if (token.equals(item)) {
+                    return item;
+                }
+            }
+        }
+        return "none";
+    }
+    
+    private String contains4(String[] tokens, List<String> list) {
+    	int i=0;
+        for (String token : tokens) {
+            for (String item : list) {
+                if (token.equals(item)) {
+                	if(i==0){
+                		i++;
+                	}else {
+                		return item;
+                	}
+                }
+            }
+        }
+        return "none";
+    }
+
+    private Boolean containsBoolean(String[] tokens, List<String> list) {
+        for (String token : tokens) {
+            for (String item : list) {
+                if (token.equals(item)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }
 
