@@ -1,0 +1,58 @@
+package scraper;
+
+import db.Database;
+import model.Annonce;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Sitemanager {
+
+    //database connection
+    String url = "jdbc:mysql://localhost:3306/job_insight";
+    String user = "root";
+    String password = "";
+    Database database = new Database(url,user,password);
+
+    //tables des annonces
+
+
+
+    public List<Annonce> Insert_mjob_annonces() throws SQLException {
+
+        //Mjob mjob = new Mjob();
+        //List<Annonce> MajobAnnonces = mjob.mjobscrapping();
+
+        Rekrute_scraper rekruteScraper = new Rekrute_scraper();
+
+        rekruteScraper.ScraperRekrute();
+
+        List<Annonce> RecruteAnnonces = rekruteScraper.getListeAnnonce();
+
+        //emploiMA emp = new emploiMA();
+
+        //List<Annonce> emploiMAnnonces = emp.emploiMAScrapping();
+
+        List<Annonce> annonces = new ArrayList<Annonce>();
+
+        //annonces.addAll(emploiMAnnonces);
+        //annonces.addAll(MajobAnnonces);
+        annonces.addAll(RecruteAnnonces);
+
+        System.out.println("Debut d'enregistrement des annonces from mjob website");
+
+        for(Annonce annonce : annonces){
+            System.out.println(annonce.toString());
+            database.insertAnnonce(annonce);
+            System.out.println("---------------------------------------------------- \n");
+        }
+
+        return database.getAllAnnonces();
+    }
+
+    public Sitemanager() throws SQLException {
+    }
+
+
+}

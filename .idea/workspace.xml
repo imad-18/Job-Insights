@@ -4,7 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="242c11fa-0c7d-4117-b42a-ff4dcddf2002" name="Changes" comment="that't work but s need developpement" />
+    <list default="true" id="242c11fa-0c7d-4117-b42a-ff4dcddf2002" name="Changes" comment="that't work but s need developpement">
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/jsoup_1_18_1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/db/JobDAO.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/bin/scraper/Sitemanager.class" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/db/Avantage_Sociaux.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/db/CompetenceRecom.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/db/SoftSkills.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/db/TraitPersonn.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/db/jobName_data.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scraper/Mjob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scraper/PretraitementMjob.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scraper/PretraitementRekrute.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scraper/PretraitementemploiMA.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scraper/Sitemanager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/scraper/emploiMA.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db/JobDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/JobDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scraper/Rekrute_scraper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/Rekrute_scraper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scraper/Scrapingmanager.java" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -33,25 +54,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Admin/eclipse-workspace/job_insights_api/src/rmi_api&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.Main.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "Merging master",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Admin/eclipse-workspace/job_insights_api/src/rmi_api",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
@@ -98,6 +119,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="init to work master" />
     <MESSAGE value="that't work but s need developpement" />
-    <option name="LAST_COMMIT_MESSAGE" value="that't work but s need developpement" />
+    <MESSAGE value="Scrapping final akhiraan" />
+    <option name="LAST_COMMIT_MESSAGE" value="Scrapping final akhiraan" />
   </component>
 </project>
