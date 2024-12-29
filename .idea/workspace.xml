@@ -4,7 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e7e7e2cd-f0a4-4bcd-a84c-4dc35b9b7648" name="Changes" comment="GetAllAnnonces fix RMI API" />
+    <list default="true" id="e7e7e2cd-f0a4-4bcd-a84c-4dc35b9b7648" name="Changes" comment="mini commit">
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app/Controller.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/app/Services.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/application.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/data_analyse/NlpModule_Request.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/data_analyse/Traitement_Response.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/db/Database.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/db/JobDAO.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ml/ClassificationModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/ml/PretraitementData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/module-info.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/scraper/Sitemanager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/job_insights.iml" beforeDir="false" afterPath="$PROJECT_DIR$/job_insights.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/rmi_api/rmi_api.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/app/Services.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/app/Services.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -18,7 +36,7 @@
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../job_insights_api" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -44,7 +62,7 @@
   "keyToString": {
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "master",
+    "git-widget-placeholder": "job__insights__api",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/Admin/eclipse-workspace/job_insights_api/src/rmi_api",
     "node.js.detected.package.eslint": "true",
@@ -103,6 +121,7 @@
       <workItem from="1735333808926" duration="9708000" />
       <workItem from="1735346300126" duration="610000" />
       <workItem from="1735346928620" duration="7850000" />
+      <workItem from="1735466904163" duration="171000" />
     </task>
     <task id="LOCAL-00001" summary="Connection front vr2">
       <option name="closed" value="true" />
@@ -138,6 +157,7 @@
     <MESSAGE value="switch" />
     <MESSAGE value="Connection front vr2" />
     <MESSAGE value="GetAllAnnonces fix RMI API" />
-    <option name="LAST_COMMIT_MESSAGE" value="GetAllAnnonces fix RMI API" />
+    <MESSAGE value="mini commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="mini commit" />
   </component>
 </project>

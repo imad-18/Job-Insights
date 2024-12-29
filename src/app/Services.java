@@ -22,6 +22,9 @@ public class Services implements ServicesAPI {
 
     @Override
     public ResponseRMI processUserQuery(String userQuery) throws RemoteException {
+        //Npl
+        //
+
         return response;
     }
 
