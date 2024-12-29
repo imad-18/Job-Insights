@@ -18,8 +18,8 @@ public class emploiMA {
 
 
         String PageNumber = "24";
-
         try {
+
             Document mainPage = Jsoup.connect(url)
                     .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
                     .get();
@@ -83,7 +83,7 @@ public class emploiMA {
                     String managementEquipe = getTextFromArrowList(jobPage, "Management d'équipe");
 
                     // Création d'une instance d'Annonce
-                    Annonce annonce = pretraitement(title, startDate, entrepriseNom, secteur, entrepriseDescription,
+                    Annonce annonce = pretraitement(title, startDate,jobUrl, entrepriseNom, secteur, entrepriseDescription,
                             fonction, description, mission, profilRecherche, metier, contratDetails, region, ville,
                             teletravail, langue, niveauExperience, niveauEtude, numPosts, salaire, managementEquipe);
 
@@ -102,12 +102,11 @@ public class emploiMA {
         return annonces;
     }
 
-    private Annonce pretraitement(String title, String startDate, String entrepriseNom, String secteur,
+    private Annonce pretraitement(String title, String startDate, String entrepriseNom, String secteur,String jobUrl,
                                   String entrepriseDescription, String fonction, String description, String mission,
                                   String profilRecherche, String metier, String contratDetails, String region,
                                   String ville, String teletravail, String langue, String niveauExperience,
                                   String niveauEtude, String numPosts, String salaire, String managementEquipe) {
-
 
 
         System.out.println("=======================================");
@@ -121,15 +120,11 @@ public class emploiMA {
         System.out.println("Missions:\n" + mission);
         System.out.println("Profil Recherché: " + profilRecherche);
         System.out.println("Métier: " + metier);
-
         System.out.println("Contrat Details: " + contratDetails);
         System.out.println("Région: " + region);
         System.out.println("Ville: " + ville);
         System.out.println("Télétravail: " + teletravail);
-
         System.out.println("Langues Exigées: " + langue);
-
-
         System.out.println("Niveau d'expérience: " + niveauExperience);
         System.out.println("Niveau d'études: " + niveauEtude);
         System.out.println("Nombre de postes: " + numPosts);
@@ -137,8 +132,38 @@ public class emploiMA {
         System.out.println("Management d'équipe: " + managementEquipe);
         System.out.println("=======================================\n");
 
+        Annonce annonce = new Annonce();
+        annonce.setTitle(title);
+        annonce.setDescription(description);
+        annonce.setStartDate(PretraitementemploiMA.regulerDate(startDate));
+        annonce.setEndDate("");
+        annonce.setPostsNum(Integer.parseInt(numPosts));
+        annonce.setSecteur(PretraitementemploiMA.formatSecteur(secteur));
+        annonce.setFonction(fonction);///----------//-----json
+        annonce.setExperience(PretraitementemploiMA.formatExperience(niveauExperience));
+        annonce.setEtudeLevel(niveauEtude);
+        annonce.setContratDetails(contratDetails);
+        annonce.setUrl(jobUrl);
+        annonce.setSiteName("emploi.ma");
+        annonce.setAdresseEntreprise(ville);
+        annonce.setSiteWebEntreprise("");
+        annonce.setNomEntreprise(entrepriseNom);
+        annonce.setDescriptionEntreprise(entrepriseDescription);
+        annonce.setRegion(region);
+        annonce.setCity(ville);
+        annonce.setIndustry(metier);
+        annonce.setTraitsPersonnalite("");//-----Profil recherché /Description
+        annonce.setCompetencesRequises("");//-----Missions
+        annonce.setSoftSkills("");//--------Description
+        annonce.setCompetencesRecommandees("");//-----Profil recherché /Description
+        annonce.setLangue(langue);
+        annonce.setNiveauLangue("");
+        annonce.setSalaire(PretraitementMjob.transformerSalaire(salaire));
+        annonce.setAvantagesSociaux("");//---------
+        annonce.setTeletravail(teletravail);
 
-        return null ;
+
+        return annonce ;
     }
 
     private static String getTextFromArrowList(Document jobPage, String searchText) {

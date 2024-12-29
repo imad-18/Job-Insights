@@ -334,7 +334,6 @@ public class Mjob {
 
         Map<String, List<String>> results = PretraitementMjob.parseTexts(searchedProfile, posteAoccuper, skills);
 
-
         Annonce annonce = new Annonce();
         annonce.setId(id);
         annonce.setTitle(title);
