@@ -4,6 +4,7 @@ import db.Database;
 import model.Annonce;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Sitemanager {
@@ -21,11 +22,23 @@ public class Sitemanager {
     public List<Annonce> Insert_mjob_annonces() throws SQLException {
 
         //Mjob mjob = new Mjob();
-        //List<Annonce> annonces = mjob.mjobscrapping();
+        //List<Annonce> MajobAnnonces = mjob.mjobscrapping();
 
-        emploiMA emp = new emploiMA();
+        Rekrute_scraper rekruteScraper = new Rekrute_scraper();
 
-        List<Annonce> annonces = emp.emploiMAScrapping();
+        rekruteScraper.ScraperRekrute();
+
+        List<Annonce> RecruteAnnonces = rekruteScraper.getListeAnnonce();
+
+        //emploiMA emp = new emploiMA();
+
+        //List<Annonce> emploiMAnnonces = emp.emploiMAScrapping();
+
+        List<Annonce> annonces = new ArrayList<Annonce>();
+
+        //annonces.addAll(emploiMAnnonces);
+        //annonces.addAll(MajobAnnonces);
+        annonces.addAll(RecruteAnnonces);
 
         System.out.println("Debut d'enregistrement des annonces from mjob website");
 

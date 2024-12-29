@@ -13,6 +13,7 @@ public class emploiMA {
 
     public List<Annonce> emploiMAScrapping() {
         List<Annonce> annonces = new ArrayList<>();
+        int id = 0 ;
 
         String url = "https://www.emploi.ma/recherche-jobs-maroc";
 
@@ -53,6 +54,9 @@ public class emploiMA {
             }
 
             for (Element job : jobLinks) {
+                id++;
+                System.out.println("ID : " + id);
+
                 String jobUrl = job.attr("data-href");
 
                 try {
@@ -102,7 +106,7 @@ public class emploiMA {
         return annonces;
     }
 
-    private Annonce pretraitement(String title, String startDate, String entrepriseNom, String secteur,String jobUrl,
+    private Annonce pretraitement(String title, String startDate,String jobUrl, String entrepriseNom, String secteur,
                                   String entrepriseDescription, String fonction, String description, String mission,
                                   String profilRecherche, String metier, String contratDetails, String region,
                                   String ville, String teletravail, String langue, String niveauExperience,
@@ -139,27 +143,27 @@ public class emploiMA {
         annonce.setEndDate("");
         annonce.setPostsNum(Integer.parseInt(numPosts));
         annonce.setSecteur(PretraitementemploiMA.formatSecteur(secteur));
-        annonce.setFonction(fonction);///----------//-----json
+        annonce.setFonction(PretraitementMjob.extracting_fonction(fonction , metier));///   Meme que Job MA----------//-----json
         annonce.setExperience(PretraitementemploiMA.formatExperience(niveauExperience));
-        annonce.setEtudeLevel(niveauEtude);
+        annonce.setEtudeLevel(PretraitementemploiMA.transformTextEtudeLevel(niveauEtude));
         annonce.setContratDetails(contratDetails);
         annonce.setUrl(jobUrl);
         annonce.setSiteName("emploi.ma");
         annonce.setAdresseEntreprise(ville);
-        annonce.setSiteWebEntreprise("");
+        annonce.setSiteWebEntreprise("");//-----------//
         annonce.setNomEntreprise(entrepriseNom);
         annonce.setDescriptionEntreprise(entrepriseDescription);
         annonce.setRegion(region);
         annonce.setCity(ville);
         annonce.setIndustry(metier);
-        annonce.setTraitsPersonnalite("");//-----Profil recherché /Description
-        annonce.setCompetencesRequises("");//-----Missions
-        annonce.setSoftSkills("");//--------Description
-        annonce.setCompetencesRecommandees("");//-----Profil recherché /Description
-        annonce.setLangue(langue);
-        annonce.setNiveauLangue("");
-        annonce.setSalaire(PretraitementMjob.transformerSalaire(salaire));
-        annonce.setAvantagesSociaux("");//---------
+        annonce.setTraitsPersonnalite(PretraitementMjob.parseTexts(description,profilRecherche,mission).get("Personality Traits").toString());//-----
+        annonce.setCompetencesRequises(PretraitementMjob.parseTexts(description,profilRecherche,mission).get("Competencies").toString());//-----
+        annonce.setSoftSkills(PretraitementMjob.parseTexts(description,profilRecherche,mission).get("Soft Skills").toString());//--------
+        annonce.setCompetencesRecommandees(PretraitementMjob.parseTexts(description,profilRecherche,mission).get("Competencies").toString());
+        annonce.setLangue(PretraitementemploiMA.parseLanguageLevel(langue).get("langue"));
+        annonce.setNiveauLangue(PretraitementemploiMA.parseLanguageLevel(langue).get("niveau"));
+        annonce.setSalaire(PretraitementemploiMA.formatRangeSalaire(salaire));
+        annonce.setAvantagesSociaux(PretraitementMjob.parseTexts(description,profilRecherche,mission).get("Social Benefits").toString());//---------
         annonce.setTeletravail(teletravail);
 
 
@@ -201,4 +205,6 @@ public class emploiMA {
             return "Erreur";
         }
     }
+
+
 }

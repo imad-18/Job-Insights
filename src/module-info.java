@@ -3,6 +3,4 @@ module job_insights {
 	requires java.desktop;
 	requires java.sql ;
     requires json;
-
-
 }
