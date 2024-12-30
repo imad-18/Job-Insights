@@ -1,5 +1,5 @@
 package scraper;
-import model.Annonce;
+import rmi_api.Annonce;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;

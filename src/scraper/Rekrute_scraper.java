@@ -1,7 +1,6 @@
 package scraper;
 
-import model.Annonce;
-
+import rmi_api.Annonce;
 
 import java.io.IOException;
 import java.util.ArrayList;

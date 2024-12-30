@@ -10,5 +10,7 @@ module job_insights {
 	requires org.apache.commons.lang3;
     requires java.rmi;
     requires rmi.api;
+	requires json;
+	requires weka.cleaned;
 
 }

@@ -1,7 +1,6 @@
 package scraper;
 
-import model.Annonce;
-import org.jsoup.Jsoup;
+import rmi_api.Annonce;import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
