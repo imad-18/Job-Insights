@@ -5,20 +5,27 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="242c11fa-0c7d-4117-b42a-ff4dcddf2002" name="Changes" comment="final version hamdolilah">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/openjfx_23_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/app/Dashboard.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../job_insights_api/job_insights_api1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../job_insights_api/src/rmi_api/rmi_api1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/db/JobDAO.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/scraper/Sitemanager.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/job_insights.iml" beforeDir="false" afterPath="$PROJECT_DIR$/job_insights.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/db/JobDAO.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/db/JobDAO.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/GUIdata/Interface.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/NlpModule_Request.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/data_analyse/Traitement_Response.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/db/Database.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/ml/ClassificationModel.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/ml/PretraitementData.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/job_insights/model/Annonce.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/job_insights/module-info.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/module-info.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/job_insights/scraper/Rekrute_scraper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/scraper/Rekrute_scraper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/job_insights/scraper/Sitemanager.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/scraper/Sitemanager.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/job_insights/scraper/anapec_scraper.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/job_insights/scraper/anapec_scraper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/db/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/db/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/module-info.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/module-info.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scraper/Mjob.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/Mjob.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scraper/Rekrute_scraper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/Rekrute_scraper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/scraper/anapec_scraper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/anapec_scraper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/scraper/Sitemanager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/Sitemanager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/scraper/emploiMA.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/scraper/emploiMA.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,8 +33,16 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GitHubPullRequestSearchHistory">{
   &quot;lastFilter&quot;: {
@@ -51,13 +66,14 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.Dashboard.executor": "Run",
     "Application.Main.executor": "Run",
     "Application.TestModelGUI.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Admin/Downloads/weka-cleaned.jar",
+    "last_opened_file_path": "C:/Users/Admin/Downloads/openjfx-23.0.1_windows-x64_bin-sdk/javafx-sdk-23.0.1/lib/javafx.web.jar",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -75,7 +91,21 @@
       <recent name="C:\Users\Admin\eclipse-workspace\job_insights\src\ml" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.TestModelGUI">
+  <component name="RunManager" selected="Application.Dashboard">
+    <configuration name="Dashboard" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="app.Dashboard" />
+      <module name="job_insights" />
+      <option name="VM_PARAMETERS" value="--module-path &quot;C:\Users\Admin\Downloads\openjfx-23.0.1_windows-x64_bin-sdk\javafx-sdk-23.0.1\lib&quot; --add-modules javafx.controls,javafx.fxml " />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="app.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="app.Main" />
       <module name="job_insights" />
@@ -102,8 +132,14 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Application.Dashboard" />
+      <item itemvalue="Application.Main" />
+      <item itemvalue="Application.TestModelGUI" />
+    </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.Dashboard" />
         <item itemvalue="Application.TestModelGUI" />
         <item itemvalue="Application.Main" />
       </list>
@@ -126,7 +162,7 @@
       <option name="presentableId" value="Default" />
       <updated>1735479653900</updated>
       <workItem from="1735479655024" duration="1128000" />
-      <workItem from="1735515432183" duration="1567000" />
+      <workItem from="1735515432183" duration="18564000" />
     </task>
     <task id="LOCAL-00001" summary="final version hamdolilah">
       <option name="closed" value="true" />
@@ -144,7 +180,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735516596805</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="final version hamdolilah">
+      <option name="closed" value="true" />
+      <created>1735517162022</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1735517162022</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -156,5 +200,96 @@
     <MESSAGE value="Scrapping final akhiraan" />
     <MESSAGE value="final version hamdolilah" />
     <option name="LAST_COMMIT_MESSAGE" value="final version hamdolilah" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/emploiMA.java</url>
+          <line>98</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/emploiMA.java</url>
+          <line>139</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/emploiMA.java</url>
+          <line>140</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/emploiMA.java</url>
+          <line>141</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Mjob.java</url>
+          <line>339</line>
+          <option name="timeStamp" value="8" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Mjob.java</url>
+          <line>340</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Mjob.java</url>
+          <line>179</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Mjob.java</url>
+          <line>180</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Mjob.java</url>
+          <line>181</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Mjob.java</url>
+          <line>240</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>216</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>215</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>214</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>217</line>
+          <option name="timeStamp" value="17" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>127</line>
+          <option name="timeStamp" value="18" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>65</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/scraper/Rekrute_scraper.java</url>
+          <line>66</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

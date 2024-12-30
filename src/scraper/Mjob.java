@@ -1,4 +1,5 @@
 package scraper;
+import app.Dashboard;
 import rmi_api.Annonce;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -6,11 +7,20 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Mjob {
+
+    private String url = "jdbc:mysql://localhost:3306/job_insight";
+    private String user = "root";
+    private String password = "";
+    private Connection connection = DriverManager.getConnection(url, user, password);
 
     static public List<Annonce> listeAnnonce = new ArrayList<Annonce>();
     int id = 0;
@@ -31,13 +41,30 @@ public class Mjob {
     static String langues;
     static String salary;
 
-    public Mjob() {
+    public Mjob() throws SQLException {
+    }
+
+    int size ;
+    public  int getSize() {
+        return size;
+    }
+
+    public void startScheduledScraping(long period) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            System.out.println("Début du scrapping...");
+            List<Annonce> nouvellesAnnonces = mjobscrapping();
+            System.out.println("Nouvelles annonces récupérées : " + nouvellesAnnonces.size());
+            size = nouvellesAnnonces.size();
+            Dashboard.moyenneperjourMjob = size;
+            sauvegarderAnnonces(nouvellesAnnonces);
+        }, 0, period, TimeUnit.HOURS);
     }
 
     public Mjob(String title, String searchedProfile, String publishDate, String secteur,
                 String experienceYears, String StudyLevel, String contractType, String annonceLink,
                 String company_name, String descriptionDentreprise, String city, String industry,
-                String softskills, String langues, String salary, String avantagesSociaux) {
+                String softskills, String langues, String salary, String avantagesSociaux) throws SQLException {
         Mjob.title = title;
         Mjob.searchedProfile = searchedProfile;
         Mjob.publishDate = publishDate;
@@ -146,7 +173,13 @@ public class Mjob {
             } else {
                 System.out.println("Aucun texte correspondant trouvé !");
             }
+            boolean stop = false;
             for(int j=0 ; j<Integer.parseInt(totalPages);j++ ){
+
+
+
+                if(stop)
+                    break;
 
                 mjob = "https://www.m-job.ma/recherche?page="+j;
 
@@ -156,6 +189,8 @@ public class Mjob {
 
                 for (Element jobItem : jobItems) {
                 id++;
+
+
 
                 System.out.println(id);
                 Element titleElement = jobItem.selectFirst("h3.offer-title");
@@ -203,106 +238,109 @@ public class Mjob {
                     annonceLink = voirplusElement.attr("href"); //hrefvalue
                     System.out.println("Niiice: " + annonceLink);
 
-                    Document document1 = Jsoup.connect(annonceLink).get();
+                    if (!isAnnonceDejaScrapee(annonceLink)) {
 
-                    Element listDetails = document1.selectFirst("ul.list-details");
+                        Document document1 = Jsoup.connect(annonceLink).get();
 
-                    assert listDetails != null;
-                    Element companyElement = listDetails.select("li > h3").first();
-                    company_name = companyElement.text();
-                    System.out.println("4- Société: " + company_name);
+                        Element listDetails = document1.selectFirst("ul.list-details");
 
-                    Element contractTypeElement = listDetails.select("li > h3").get(1);
-                    contractType = contractTypeElement.text();
-                    System.out.println("5- Contract type: " + contractType);
+                        assert listDetails != null;
+                        Element companyElement = listDetails.select("li > h3").first();
+                        company_name = companyElement.text();
+                        System.out.println("4- Société: " + company_name);
 
-                    Element salaryElement = listDetails.select("li > h3").get(2);
-                    salary = salaryElement.text();
-                    System.out.println("6- Salary: " + salary);
+                        Element contractTypeElement = listDetails.select("li > h3").get(1);
+                        contractType = contractTypeElement.text();
+                        System.out.println("5- Contract type: " + contractType);
 
-
-                    // Select parent div with class 'the-content'
-                    Element otherInfos = document1.selectFirst("div.the-content");
+                        Element salaryElement = listDetails.select("li > h3").get(2);
+                        salary = salaryElement.text();
+                        System.out.println("6- Salary: " + salary);
 
 
-                    // Safely check if the parent div exists
-                    if (otherInfos != null) {
-                        // Select all <div> elements within the parent
-                        Elements divElements = otherInfos.select("div");
+                        // Select parent div with class 'the-content'
+                        Element otherInfos = document1.selectFirst("div.the-content");
 
-                        // Select all <h3> elements
-                        Elements headings = otherInfos.select("h3.heading");
 
-                        // Loop through each <h3> element to find the one you're targeting
-                        for (Element heading : headings) {
-                            String headingText = heading.text();
+                        // Safely check if the parent div exists
+                        if (otherInfos != null) {
+                            // Select all <div> elements within the parent
+                            Elements divElements = otherInfos.select("div");
 
-                            if (headingText.equals("Le recruteur :")) {
-                                //DEScription d'entreprise
-                                Element companyDescriptionText = heading.nextElementSibling();
+                            // Select all <h3> elements
+                            Elements headings = otherInfos.select("h3.heading");
 
-                                assert companyDescriptionText != null;
-                                descriptionDentreprise = companyDescriptionText.text();
-                                System.out.println("9- Description d'entreprise: " + descriptionDentreprise);
+                            // Loop through each <h3> element to find the one you're targeting
+                            for (Element heading : headings) {
+                                String headingText = heading.text();
 
-                            } else if (headingText.equals("Profil recherché :")) {
-                                Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
+                                if (headingText.equals("Le recruteur :")) {
+                                    //DEScription d'entreprise
+                                    Element companyDescriptionText = heading.nextElementSibling();
 
-                                assert activityAreaElement != null;
-                                searchedProfile = activityAreaElement.text();
-                                System.out.println("10- searchedProfile: " + searchedProfile);
+                                    assert companyDescriptionText != null;
+                                    descriptionDentreprise = companyDescriptionText.text();
+                                    System.out.println("9- Description d'entreprise: " + descriptionDentreprise);
 
+                                } else if (headingText.equals("Profil recherché :")) {
+                                    Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
+
+                                    assert activityAreaElement != null;
+                                    searchedProfile = activityAreaElement.text();
+                                    System.out.println("10- searchedProfile: " + searchedProfile);
+
+                                } else if (headingText.equals("Poste à occuper :")) {
+                                    Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
+
+                                    assert activityAreaElement != null;
+                                    posteAoccuper = activityAreaElement.text();
+                                    System.out.println("10- posteAoccuper : " + posteAoccuper);
+
+                                } else if (headingText.equals("Secteur(s) d'activité :")) {
+                                    Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
+
+                                    assert activityAreaElement != null;
+                                    secteur = activityAreaElement.text();
+                                    System.out.println("10- ActivityArea: " + secteur);
+
+                                } else if (headingText.equals("Métier(s) :")) {
+                                    Element industryElement = heading.nextElementSibling();
+                                    assert industryElement != null;
+                                    industry = industryElement.text();
+                                    System.out.println("11- Metier: " + industry);
+
+                                } else if (headingText.equals("Niveau d'expériences requis :")) {
+                                    Element requiredStudyYearsElement = heading.nextElementSibling();
+
+                                    assert requiredStudyYearsElement != null;
+                                    experienceYears = requiredStudyYearsElement.text();
+                                    System.out.println("12- Niveau d'expériences requis: " + experienceYears);
+                                } else if (headingText.equals("Niveau d'études exigé :")) {
+                                    Element requiredStudyYearsElement = heading.nextElementSibling();
+
+                                    assert requiredStudyYearsElement != null;
+                                    StudyLevel = requiredStudyYearsElement.text();
+                                    System.out.println("13- Niveau d'études exigé: " + StudyLevel);
+
+                                } else if (headingText.equals("Langue(s) exigée(s) :")) { // Replace with your target text
+                                    // Get the next sibling div after the <h3> element
+                                    Element siblingDiv = heading.nextElementSibling();
+
+                                    assert siblingDiv != null;
+                                    langues = siblingDiv.text();
+                                    System.out.println("14- Langages: " + langues);
+                                    break; // Exit the loop after finding the target heading
+                                }
                             }
-                            else if (headingText.equals("Poste à occuper :")) {
-                                Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
 
-                                assert activityAreaElement != null;
-                                posteAoccuper = activityAreaElement.text();
-                                System.out.println("10- posteAoccuper : " + posteAoccuper);
-
-                            }
-                            else if (headingText.equals("Secteur(s) d'activité :")) {
-                                Element activityAreaElement = heading.nextElementSibling(); // Index starts from 0
-
-                                assert activityAreaElement != null;
-                                secteur = activityAreaElement.text();
-                                System.out.println("10- ActivityArea: " + secteur);
-
-                            } else if (headingText.equals("Métier(s) :")) {
-                                Element industryElement = heading.nextElementSibling();
-                                assert industryElement != null;
-                                industry = industryElement.text();
-                                System.out.println("11- Metier: " + industry);
-
-                            } else if (headingText.equals("Niveau d'expériences requis :")) {
-                                Element requiredStudyYearsElement = heading.nextElementSibling();
-
-                                assert requiredStudyYearsElement != null;
-                                experienceYears = requiredStudyYearsElement.text();
-                                System.out.println("12- Niveau d'expériences requis: " + experienceYears);
-                            } else if (headingText.equals("Niveau d'études exigé :")) {
-                                Element requiredStudyYearsElement = heading.nextElementSibling();
-
-                                assert requiredStudyYearsElement != null;
-                                StudyLevel = requiredStudyYearsElement.text();
-                                System.out.println("13- Niveau d'études exigé: " + StudyLevel);
-
-                            } else if (headingText.equals("Langue(s) exigée(s) :")) { // Replace with your target text
-                                // Get the next sibling div after the <h3> element
-                                Element siblingDiv = heading.nextElementSibling();
-
-                                assert siblingDiv != null;
-                                langues = siblingDiv.text();
-                                System.out.println("14- Langages: " + langues);
-                                break; // Exit the loop after finding the target heading
-                            }
+                            System.out.println("-----------------");
+                        } else {
+                            System.out.println("Parent div with class 'the-content' not found.");
                         }
-
-                        System.out.println("-----------------");
-                    } else {
-                        System.out.println("Parent div with class 'the-content' not found.");
+                    } else{
+                        stop = true;
+                        break;
                     }
-
                 } else {
                     System.out.println("Anchor link not found!");
                 }
@@ -369,7 +407,34 @@ public class Mjob {
 
     }
 
+    private boolean isAnnonceDejaScrapee(String jobUrl) {
+        try (PreparedStatement stmt = connection.prepareStatement(
+                "SELECT COUNT(*) FROM annonce WHERE url = ?")) {
+            stmt.setString(1, jobUrl);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 
+    private void sauvegarderAnnonces(List<Annonce> annonces) {
+        try (PreparedStatement stmt = connection.prepareStatement(
+                "INSERT INTO annonce (url, title, description) VALUES (?, ?, ?)")) {
+            for (Annonce annonce : annonces) {
+                stmt.setString(1, annonce.getUrl());
+                stmt.setString(2, annonce.getTitle());
+                stmt.setString(3, annonce.getDescription());
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 
 }

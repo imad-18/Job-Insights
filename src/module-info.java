@@ -1,4 +1,5 @@
 module job_insights {
+
 	requires org.jsoup;
 	requires java.desktop;
 	requires java.sql ;
@@ -12,5 +13,9 @@ module job_insights {
     requires rmi.api;
 	requires json;
 	requires weka.cleaned;
+	requires javafx.graphics; // Pour les graphiques JavaFX
+	requires javafx.controls;
+	requires javafx.base;
+	requires javafx.fxml;
 
 }

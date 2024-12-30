@@ -568,10 +568,23 @@ public class Database {
 		return pairTable;
 	}
 
+	public ResultSet executeQuery(String sqlQuery) throws SQLException {
+		ResultSet resultSet = null;
+		try {
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery(sqlQuery);
+		} catch (SQLException e) {
+			throw new SQLException("Failed to execute query: " + e.getMessage());
+		}
+		return resultSet;
+	}
+
 	// Close the database connection
 	public void close() throws SQLException {
 		if (connection != null && !connection.isClosed()) {
 			connection.close();
 		}
 	}
+
+
 }

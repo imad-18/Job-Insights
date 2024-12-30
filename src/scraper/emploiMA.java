@@ -1,15 +1,46 @@
 package scraper;
 
+import app.Dashboard;
 import rmi_api.Annonce;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import weka.core.pmml.jaxbbindings.False;
 
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class emploiMA {
+
+    private String url = "jdbc:mysql://localhost:3306/job_insight";
+    private String user = "root";
+    private String password = "";
+    private Connection connection = DriverManager.getConnection(url, user, password);
+
+    public emploiMA() throws SQLException {
+    }
+
+    int size ;
+    public int getSize() {
+        return size;
+    }
+
+    public void startScheduledScraping(long period) {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        scheduler.scheduleAtFixedRate(() -> {
+            System.out.println("Début du scrapping...");
+            List<Annonce> nouvellesAnnonces = emploiMAScrapping();
+            System.out.println("Nouvelles annonces récupérées : " + nouvellesAnnonces.size());
+            size = nouvellesAnnonces.size();
+            Dashboard.moyenneperjourEmploiMA = size;
+            sauvegarderAnnonces(nouvellesAnnonces);
+        }, 0, period, TimeUnit.HOURS);
+    }
 
     public List<Annonce> emploiMAScrapping() {
         List<Annonce> annonces = new ArrayList<>();
@@ -33,10 +64,16 @@ public class emploiMA {
                 System.out.println("Nombre de page : " + PageNumber);
 
             }
+            boolean stop = false;
 
             for (int j=0; j<Integer.parseInt(PageNumber) ; j++){
 
+
+                if(stop)
+                    break;
+
                 System.out.println("Page:"+(j+1));
+
                 if (j != 0) {
                     url = "https://www.emploi.ma/recherche-jobs-maroc?page="+j;
                     System.out.println(url);
@@ -59,7 +96,9 @@ public class emploiMA {
 
                 String jobUrl = job.attr("data-href");
 
-                try {
+                if (!isAnnonceDejaScrapee(jobUrl)){
+
+                    try {
                     Document jobPage = Jsoup.connect(jobUrl)
                             .userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.110 Safari/537.36")
                             .get();
@@ -96,6 +135,11 @@ public class emploiMA {
                 } catch (Exception e) {
                     System.out.println("Erreur lors du traitement de l'annonce : " + jobUrl);
                     e.printStackTrace();
+                     }
+                }
+                else{
+                    stop = true;
+                    break;
                 }
             }
             }
@@ -206,5 +250,33 @@ public class emploiMA {
         }
     }
 
+    private boolean isAnnonceDejaScrapee(String jobUrl) {
+        try (PreparedStatement stmt = connection.prepareStatement(
+                "SELECT COUNT(*) FROM annonce WHERE url = ?")) {
+            stmt.setString(1, jobUrl);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private void sauvegarderAnnonces(List<Annonce> annonces) {
+        try (PreparedStatement stmt = connection.prepareStatement(
+                "INSERT INTO annonce (url, title, description) VALUES (?, ?, ?)")) {
+            for (Annonce annonce : annonces) {
+                stmt.setString(1, annonce.getUrl());
+                stmt.setString(2, annonce.getTitle());
+                stmt.setString(3, annonce.getDescription());
+                stmt.addBatch();
+            }
+            stmt.executeBatch();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
 }
