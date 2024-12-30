@@ -1,8 +1,12 @@
 package db;
 
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang3.tuple.Pair;
 import rmi_api.Annonce;
@@ -16,6 +20,36 @@ public class Database {
 	private String user = "root";
 	private String password = "";
 
+	public void insert(int value) {
+		String query = "INSERT INTO star (star) VALUES (?)"; // Correction ici
+
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+			 PreparedStatement statement = connection.prepareStatement(query)) {
+			statement.setInt(1, value); // On place la valeur dans la requête
+			statement.executeUpdate();   // Exécuter la requête
+			System.out.println("Valeur insérée avec succès: " + value);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+
+
+	public List<Integer> getAll() {
+		List<Integer> values = new ArrayList<>();
+		String query = "SELECT star FROM star"; // Assurez-vous que le nom de la colonne est correct
+
+		try (Connection connection = DriverManager.getConnection(url, user, password);
+			 PreparedStatement statement = connection.prepareStatement(query);
+			 ResultSet resultSet = statement.executeQuery()) {
+
+			while (resultSet.next()) {
+				values.add(resultSet.getInt("star"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return values;
+	}
 
 	// Constructor to initialize the database connection
 	public Database(String dbUrl, String username, String password) throws SQLException {
@@ -585,6 +619,75 @@ public class Database {
 			connection.close();
 		}
 	}
+
+
+	public double getAverageAnnoncesPerDay(String siteName) throws SQLException {
+		String query = "SELECT StartDate FROM annonce WHERE SiteName = ?";
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		dateFormat.setLenient(false); // Validation stricte du format
+
+		Map<String, Integer> annoncesParJour = new HashMap<>();
+		int totalAnnonces = 0;
+
+		try (PreparedStatement stmt = connection.prepareStatement(query)) {
+			// Définir le paramètre de la requête
+			stmt.setString(1, siteName);
+
+			try (ResultSet rs = stmt.executeQuery()) {
+				while (rs.next()) {
+					String startDate = rs.getString("StartDate");
+
+					try {
+						// Valider que la date est au format "JJ/MM/YYYY"
+						dateFormat.parse(startDate);
+
+						// Ajouter au comptage pour ce jour
+						annoncesParJour.put(startDate, annoncesParJour.getOrDefault(startDate, 0) + 1);
+						totalAnnonces++;
+					} catch (ParseException e) {
+						// Ignorer les dates non valides
+						System.out.println("Date ignorée (format invalide) : " + startDate);
+					}
+				}
+			}
+		}
+
+		// Calculer la moyenne des annonces par jour
+		return annoncesParJour.size() > 0 ? (double) totalAnnonces / annoncesParJour.size() : 0.0;
+	}
+
+	public double getPercentageBySiteName(String siteName) throws SQLException {
+		String queryTotal = "SELECT COUNT(*) AS total FROM annonce";
+		String queryBySiteName = "SELECT COUNT(*) AS countBySite FROM annonce WHERE SiteName = ?";
+
+		int totalAnnonces = 0;
+		int annoncesPourSite = 0;
+
+		try (PreparedStatement stmtTotal = connection.prepareStatement(queryTotal);
+			 PreparedStatement stmtBySiteName = connection.prepareStatement(queryBySiteName)) {
+
+			// Obtenir le nombre total d'enregistrements
+			try (ResultSet rsTotal = stmtTotal.executeQuery()) {
+				if (rsTotal.next()) {
+					totalAnnonces = rsTotal.getInt("total");
+				}
+			}
+
+			// Obtenir le nombre d'enregistrements pour le site spécifié
+			stmtBySiteName.setString(1, siteName);
+			try (ResultSet rsBySite = stmtBySiteName.executeQuery()) {
+				if (rsBySite.next()) {
+					annoncesPourSite = rsBySite.getInt("countBySite");
+				}
+			}
+		}
+
+		// Calculer le pourcentage
+		return totalAnnonces > 0 ? (double) annoncesPourSite / totalAnnonces * 100 : 0.0;
+	}
+
+
+
 
 
 }

@@ -23,10 +23,11 @@ public class NLPProcessor {
 				Arrays.asList("emploi","rekrute","m-job"),
 				Arrays.asList("Français","Anglais","Espagol","Allemand","Italien","Portugais","Chinois","Japonais","Arabe","Russe"),
 				Arrays.asList("Plus","plus","meilleur","Meilleur","Tendance","tendance","necessaire"),
-				Arrays.asList("competence","fonctions","fonction","experience","experiences","secteur","Secteur","ville","Ville",
+				Arrays.asList("competences","fonctions","experiences","secteur","Secteur","ville","Ville",
 						"site","page","niveau","etudeLevel","education","salaire"),
 				Arrays.asList("7daydi"),
-				Arrays.asList("Ventes","Droit","Programmation","Commnication","Finance","Entrepreneuriat")
+				Arrays.asList("Ventes","Droit","Programmation","Logistique","Sécurité","Java","PostgreSQL","React","Angular","SQL","Azure","Python","Node.js","Leadership","Programmation","Empathie","Tourisme","Commnication","Finance","Entrepreneuriat","Autonomie","TypeScript","DevOps","jQuery","Docker","JavaScript")
+
 		);
 	}
 
@@ -40,13 +41,13 @@ public class NLPProcessor {
 		//Columns identification
 		String identifier = Identifier.identifyIdentifiers(tokens);
 		if (!identifier.equals("none")) {
-			if(identifier.equals("competence") || identifier.equals("competences")){
+			if( identifier.equals("competences")){
 				identifier = "CompetencesRequises";
 			}
-			if(identifier.equals("fonctions") || identifier.equals("fonction")){
+			if(identifier.equals("fonctions")){
 				identifier = "Fonction";
 			}
-			if(identifier.equals("experience") || identifier.equals("experiences")){
+			if(identifier.equals("experiences")){
 				identifier = "Experience";
 			}
 			if(identifier.equals("secteur") || identifier.equals("Secteur")){
@@ -80,13 +81,13 @@ public class NLPProcessor {
 		String identifier2 = Identifier.identifyIdentifiers2(tokens);
 		System.out.println(identifier2);
 		if (!identifier2.equals("none")) {
-			if(identifier2.equals("competence") || identifier2.equals("competences")){
+			if( identifier2.equals("competences")){
 				identifier2 = "CompetencesRequises";
 			}
-			if(identifier2.equals("fonctions") || identifier2.equals("fonction")){
+			if(identifier2.equals("fonctions")){
 				identifier2 = "Fonction";
 			}
-			if(identifier2.equals("experience") || identifier2.equals("experiences")){
+			if(identifier2.equals("experiences")){
 				identifier2 = "Experience";
 			}
 			if(identifier2.equals("ville") || identifier2.equals("Ville")){
@@ -179,9 +180,14 @@ public class NLPProcessor {
 		System.out.println("Traitement des tokens begins .");
 		int size = this.tableIdentifiers.size();
 		ArrayList<Pair<String,String>> table = this.tableIdentifiers;
-		if(size == 1 && table.get(0).getLeft().equals("Values")){
+		if(size == 1 && table.get(0).getLeft().equals("Values")){//{ll:rrr}
 			String value = table.getFirst().getRight();
 			String column = "none";
+			for(String i : this.Identifier.competence){
+				if(value == i){
+					column = "CompetencesRequises";
+				}
+			}
 			for(String i : this.Identifier.cities){
 				if(value == i){
 					column = "City";
@@ -204,11 +210,11 @@ public class NLPProcessor {
 			int pourcentage = 0 ;
 			for(Pair<String , Integer> item : chart){
 				if(item.getLeft().contains(table.get(0).getRight())){
-					pourcentage = item.getRight();
+					pourcentage += item.getRight();
 				}
 			}
-			ChatResponse = "Il se voit que vous voulez savoir les offres a propos de/du "+table.get(0).getRight()+" "+table.get(1).getRight()+
-					"Donc le pourcentage des offres dans ce "+table.get(0).getRight()+" est : "+pourcentage+"% est vous aurez si desous un chart sur " +
+			ChatResponse = "Il se voit que vous voulez savoir les offres a propos de/du "+table.get(1).getRight()+" "+table.get(0).getRight()+
+					"Donc le pourcentage des offres dans ce "+table.get(1).getRight()+" est : "+pourcentage+" % est vous aurez si desous un chart sur " +
 					"les "+table.get(0).getRight()+" demande dans le marche de travaille et les annonce a propos du "+table.get(0).getRight()+" "+table.get(1).getRight()+" :) .";
 		} else if(size == 2 && table.get(0).getLeft().equals("Column") && table.get(1).getLeft().equals("Values")){
 			data = backend.Data(table.get(0).getRight() , table.get(1).getRight());
@@ -216,7 +222,7 @@ public class NLPProcessor {
 			int pourcentage = 0 ;
 			for(Pair<String , Integer> item : chart){
 				if(item.getLeft().contains(table.get(1).getRight())){
-					pourcentage = item.getRight();
+					pourcentage += item.getRight();
 				}
 			}
 			ChatResponse = "Il se voit que vous voulez savoir les offres a propos de/du "+table.get(0).getRight()+" "+table.get(1).getRight()+

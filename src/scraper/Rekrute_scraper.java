@@ -1,6 +1,7 @@
 package scraper;
 
 import app.Dashboard;
+import db.Database;
 import rmi_api.Annonce;
 
 import java.io.IOException;
@@ -27,6 +28,7 @@ public class Rekrute_scraper {
     private String url = "jdbc:mysql://localhost:3306/job_insight";
     private String user = "root";
     private String password = "";
+    private Database db = new Database(url, user, password);
     private Connection connection = DriverManager.getConnection(url, user, password);
 
 
@@ -54,7 +56,11 @@ public class Rekrute_scraper {
             List<Annonce> nouvellesAnnonces = getListeAnnonce();
             System.out.println("Nouvelles annonces récupérées : " + nouvellesAnnonces.size());
             size = nouvellesAnnonces.size();
-            Dashboard.moyenneperjourRekrute = size;
+            try {
+                Dashboard.moyenneperjourRekrute =  db.getAverageAnnoncesPerDay("rekrute");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             sauvegarderAnnonces(nouvellesAnnonces);
         }, 0, period, TimeUnit.HOURS);
     }

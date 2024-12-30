@@ -14,11 +14,14 @@ import javafx.collections.ObservableList;
 import rmi_api.Annonce;
 import scraper.Sitemanager;
 
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class Dashboard extends Application {
     private TableView<JobAnnouncement> announcementTable;
@@ -34,18 +37,25 @@ public class Dashboard extends Application {
     String LastUpdate;
     String NextUpdate;
     List<Annonce> annonceList;
-    public static float moyenneperjourMjob;
-    public static float moyenneperjourEmploiMA;
-    public static float moyenneperjourRekrute;
+    public static double moyenneperjourMjob;
+    public static double moyenneperjourEmploiMA;
+    public static double moyenneperjourRekrute;
+    public List<Integer> startList = new ArrayList<>(Arrays.asList(1, 2,3,4,5));
 
 
+    public static Connection connect() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/job_insight";
+        String user = "root";
+        String password = "";
+        return DriverManager.getConnection(url, user, password);
+    }
 
 
     public Dashboard() throws SQLException {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws SQLException {
         VBox sideMenu = createSideMenu();
         BorderPane root = new BorderPane();
         root.setLeft(sideMenu);
@@ -55,6 +65,9 @@ public class Dashboard extends Application {
         primaryStage.setTitle("Interface Administratif - Système de Chatbot d'Emploi");
         primaryStage.setScene(scene);
         primaryStage.show();
+        moyenneperjourRekrute = database.getAverageAnnoncesPerDay("rekrute");
+        moyenneperjourMjob = database.getAverageAnnoncesPerDay("M-job");
+        moyenneperjourEmploiMA = database.getAverageAnnoncesPerDay("emploi.ma");
     }
 
     private VBox createSideMenu() {
@@ -83,12 +96,16 @@ public class Dashboard extends Application {
         button.setStyle("-fx-background-color: #4a6f6f; -fx-text-fill: white; -fx-min-width: 200;");
         button.setOnAction(e -> {
             BorderPane root = (BorderPane) button.getScene().getRoot();
-            root.setCenter(handler.createPane());
+            try {
+                root.setCenter(handler.createPane());
+            } catch (SQLException ex) {
+                throw new RuntimeException(ex);
+            }
         });
         return button;
     }
 
-    private BorderPane createDashboard() {
+    private BorderPane createDashboard() throws SQLException {
         BorderPane dashboard = new BorderPane();
         dashboard.setPadding(new Insets(20));
 
@@ -393,6 +410,7 @@ public class Dashboard extends Application {
     }
 
     private VBox createFeedbackCard(String title, String question, String stats) {
+        startList = database.getAll();
         VBox card = new VBox(10);
         card.setStyle("-fx-background-color: white; -fx-padding: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 5);");
 
@@ -413,7 +431,7 @@ public class Dashboard extends Application {
         TableColumn<JobAnnouncement, String> titleCol = new TableColumn<>("Titre");
         TableColumn<JobAnnouncement, String> siteCol = new TableColumn<>("Site");
         TableColumn<JobAnnouncement, String> dateCol = new TableColumn<>("Date");
-        TableColumn<JobAnnouncement, String> statusCol = new TableColumn<>("Statut");
+        TableColumn<JobAnnouncement, String> statusCol = new TableColumn<>("fonction");
 
         announcementTable.getColumns().addAll(titleCol, siteCol, dateCol, statusCol);
     }
@@ -431,7 +449,7 @@ public class Dashboard extends Application {
 
         table.getColumns().addAll(siteCol, lastUpdateCol, nextUpdateCol, statusCol);
 
-        if (annonces != null) {
+        if (annonces != null ) {
             // Calculer la taille de la liste
             int size = annonces.size();
 
@@ -446,6 +464,12 @@ public class Dashboard extends Application {
 
             // Ajouter le statut en haut de la liste observable
             data.add(0, status);  // Ajouter à l'index 0 pour que ce soit en haut
+        }else{
+
+            ScrapingStatus status = new ScrapingStatus(SiteCol, LastUpdate, NextUpdate, StatusCol);
+
+            // Ajouter le statut en haut de la liste observable
+            data.add(0, status);
         }
 
         // Définir les cellValueFactory pour chaque colonne
@@ -463,31 +487,32 @@ public class Dashboard extends Application {
 
 
 
-    private PieChart createSiteDistributionChart() {
+    private PieChart createSiteDistributionChart() throws SQLException {
+        double Mjob = database.getPercentageBySiteName("M-job");
+        double Rekrute = database.getPercentageBySiteName("rekrute");
+        double EmploiMA = database.getPercentageBySiteName("emploi.ma");
         ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("mjob", 500),
-                new PieChart.Data("Site 2", 300),
-                new PieChart.Data("Site 3", 700)
+                new PieChart.Data("mjob", Mjob),
+                new PieChart.Data("Rekrute", Rekrute),
+                new PieChart.Data("Emploi Ma", EmploiMA)
         );
         return new PieChart(pieChartData);
     }
 
-    private LineChart<String, Number> createActivityChart() {
+    private LineChart<String, Number> createActivityChart() throws SQLException {
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
 
         LineChart<String, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("Activité des Annonces");
+        lineChart.setTitle("Activité des Annonces par site (moyenne par jour)");
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Annonces par jour");
+        series.setName("Site name");
 
         series.getData().addAll(
-                new XYChart.Data<>("Lun", 45),
-                new XYChart.Data<>("Mar", 48),
-                new XYChart.Data<>("Mer", 52),
-                new XYChart.Data<>("Jeu", 43),
-                new XYChart.Data<>("Ven", 49)
+                new XYChart.Data<>("Mjob", database.getAverageAnnoncesPerDay("M-job")),
+                new XYChart.Data<>("Rekrute", database.getAverageAnnoncesPerDay("rekrute")),
+                new XYChart.Data<>("EmploiMA", database.getAverageAnnoncesPerDay("emploi.ma"))
         );
 
         lineChart.getData().add(series);
@@ -503,13 +528,23 @@ public class Dashboard extends Application {
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Notes moyennes");
+        if((database.getAll() !=null)){
+        startList = database.getAll();
+        }
 
+        System.out.println(startList.size());
+        Map<Object, Long> occurrences = startList.stream()
+                .collect(Collectors.groupingBy(n -> n, Collectors.counting()));
+
+        // Afficher les résultats
+        occurrences.forEach((key, value) -> System.out.println("Nombre: " + key + ", Occurrences: " + value));
+        System.out.println(occurrences.get(5));
         series.getData().addAll(
-                new XYChart.Data<>("5 étoiles", 45),
-                new XYChart.Data<>("4 étoiles", 30),
-                new XYChart.Data<>("3 étoiles", 15),
-                new XYChart.Data<>("2 étoiles", 7),
-                new XYChart.Data<>("1 étoile", 3)
+                new XYChart.Data<>("5 étoiles", 3),
+                new XYChart.Data<>("4 étoiles", 5),
+                new XYChart.Data<>("3 étoiles", 9),
+                new XYChart.Data<>("2 étoiles", 3),
+                new XYChart.Data<>("1 étoile", 4)
         );
 
         barChart.getData().add(series);
@@ -517,17 +552,28 @@ public class Dashboard extends Application {
     }
 
     private PieChart createSectorChart() {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Informatique", 35),
-                new PieChart.Data("Finance", 25),
-                new PieChart.Data("Marketing", 20),
-                new PieChart.Data("RH", 15),
-                new PieChart.Data("Autres", 5)
-        );
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        String query = "SELECT Secteur, COUNT(*) AS sector_count FROM annonce GROUP BY Secteur";
+
+        try (Connection conn = connect(); // Directly calling the connect() method
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String sectorName = rs.getString("Secteur");
+                int sectorCount = rs.getInt("sector_count");
+                pieChartData.add(new PieChart.Data(sectorName, sectorCount));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
+
         PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Distribution par Secteur");
         return chart;
     }
+
 
     private BarChart<String, Number> createRegionChart() {
         final CategoryAxis xAxis = new CategoryAxis();
@@ -537,17 +583,27 @@ public class Dashboard extends Application {
         barChart.setTitle("Distribution par Région");
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.getData().addAll(
-                new XYChart.Data<>("Paris", 450),
-                new XYChart.Data<>("Lyon", 200),
-                new XYChart.Data<>("Marseille", 180),
-                new XYChart.Data<>("Toulouse", 150),
-                new XYChart.Data<>("Autres", 520)
-        );
+        series.setName("Annonces par Région");
+
+        String query = "SELECT Region, COUNT(*) AS region_count FROM annonce GROUP BY Region";
+
+        try (Connection conn = connect(); // Assuming connect() method is defined
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String regionName = rs.getString("Region");
+                int regionCount = rs.getInt("region_count");
+                series.getData().add(new XYChart.Data<>(regionName, regionCount));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
 
         barChart.getData().add(series);
         return barChart;
     }
+
 
     private BarChart<String, Number> createExperienceChart() {
         final CategoryAxis xAxis = new CategoryAxis();
@@ -557,24 +613,45 @@ public class Dashboard extends Application {
         barChart.setTitle("Niveau d'Expérience Requis");
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.getData().addAll(
-                new XYChart.Data<>("Débutant", 300),
-                new XYChart.Data<>("1-3 ans", 450),
-                new XYChart.Data<>("3-5 ans", 350),
-                new XYChart.Data<>("5+ ans", 200)
-        );
+        series.setName("Expérience Requise");
+
+        String query = "SELECT Experience, COUNT(*) AS experience_count FROM annonce GROUP BY Experience";
+
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String experienceLevel = rs.getString("Experience");
+                int experienceCount = rs.getInt("experience_count");
+                series.getData().add(new XYChart.Data<>(experienceLevel, experienceCount));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
 
         barChart.getData().add(series);
         return barChart;
     }
 
     private PieChart createEducationLevelChart() {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
-                new PieChart.Data("Bac+2", 20),
-                new PieChart.Data("Bac+3", 30),
-                new PieChart.Data("Bac+5", 40),
-                new PieChart.Data("Autres", 10)
-        );
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
+
+        String query = "SELECT EtudeLevel, COUNT(*) AS education_count FROM annonce GROUP BY EtudeLevel";
+
+        try (Connection conn = connect();
+             PreparedStatement stmt = conn.prepareStatement(query);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String educationLevel = rs.getString("EtudeLevel");
+                int educationCount = rs.getInt("education_count");
+                pieChartData.add(new PieChart.Data(educationLevel, educationCount));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately
+        }
+
         PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Niveau d'Études Requis");
         return chart;
@@ -639,7 +716,7 @@ public class Dashboard extends Application {
     }
 
     private interface Interface {
-        BorderPane createPane();
+        BorderPane createPane() throws SQLException;
     }
     private void showAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -648,6 +725,8 @@ public class Dashboard extends Application {
         alert.setContentText(message);
         alert.showAndWait();
     }
+
+
 
     public static void main(String[] args) {
         launch(args);

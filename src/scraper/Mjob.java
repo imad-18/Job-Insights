@@ -1,5 +1,6 @@
 package scraper;
 import app.Dashboard;
+import db.Database;
 import rmi_api.Annonce;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -20,6 +21,7 @@ public class Mjob {
     private String url = "jdbc:mysql://localhost:3306/job_insight";
     private String user = "root";
     private String password = "";
+    private Database db = new Database(url, user, password);
     private Connection connection = DriverManager.getConnection(url, user, password);
 
     static public List<Annonce> listeAnnonce = new ArrayList<Annonce>();
@@ -56,7 +58,11 @@ public class Mjob {
             List<Annonce> nouvellesAnnonces = mjobscrapping();
             System.out.println("Nouvelles annonces récupérées : " + nouvellesAnnonces.size());
             size = nouvellesAnnonces.size();
-            Dashboard.moyenneperjourMjob = size;
+            try {
+                Dashboard.moyenneperjourMjob = db.getAverageAnnoncesPerDay("M-job");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             sauvegarderAnnonces(nouvellesAnnonces);
         }, 0, period, TimeUnit.HOURS);
     }

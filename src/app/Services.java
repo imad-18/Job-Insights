@@ -12,6 +12,8 @@ import java.rmi.RemoteException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+
+
 public class Services implements ServicesAPI {
 
     String url = "jdbc:mysql://localhost:3306/job_insight";
@@ -60,6 +62,15 @@ public class Services implements ServicesAPI {
         return response;
     }
 
+    @Override
+    public void submitRating(int i) {
+        System.out.println("connected Submit");
+
+        database.insert(i);
+
+        // Print the updated list
+        System.out.println(i);
+    }
 
 
 }
