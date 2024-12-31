@@ -21,14 +21,32 @@ public class Database {
 	private String password = "";
 
 	public void insert(int value) {
-		String query = "INSERT INTO star (star) VALUES (?)"; // Correction ici
+		// Vérification de la validité de la valeur
+		if (value < 1 || value > 5) {
+			System.out.println("Erreur : la valeur doit être comprise entre 1 et 5.");
+			return;
+		}
+
+		// Requête SQL pour insérer une valeur (sans spécifier l'ID auto-incrémenté)
+		String query = "INSERT INTO star (value) VALUES (?)";
 
 		try (Connection connection = DriverManager.getConnection(url, user, password);
 			 PreparedStatement statement = connection.prepareStatement(query)) {
-			statement.setInt(1, value); // On place la valeur dans la requête
-			statement.executeUpdate();   // Exécuter la requête
-			System.out.println("Valeur insérée avec succès: " + value);
+
+			// Insérer la valeur dans la requête
+			statement.setInt(1, value);
+
+			// Exécuter la requête
+			int rowsInserted = statement.executeUpdate();
+			if (rowsInserted > 0) {
+				System.out.println("Valeur insérée avec succès : " + value);
+			} else {
+				System.out.println("Insertion échouée pour la valeur : " + value);
+			}
+
 		} catch (SQLException e) {
+			// Afficher une erreur plus détaillée
+			System.err.println("Erreur lors de l'insertion de la valeur : " + value);
 			e.printStackTrace();
 		}
 	}
@@ -36,20 +54,25 @@ public class Database {
 
 	public List<Integer> getAll() {
 		List<Integer> values = new ArrayList<>();
-		String query = "SELECT star FROM star"; // Assurez-vous que le nom de la colonne est correct
+		// Requête SQL pour récupérer toutes les valeurs
+		String query = "SELECT value FROM star"; // Assurez-vous que la colonne `value` existe
 
 		try (Connection connection = DriverManager.getConnection(url, user, password);
 			 PreparedStatement statement = connection.prepareStatement(query);
 			 ResultSet resultSet = statement.executeQuery()) {
 
+			// Parcourir les résultats et ajouter les valeurs à la liste
 			while (resultSet.next()) {
-				values.add(resultSet.getInt("star"));
+				values.add(resultSet.getInt("value"));
 			}
+
 		} catch (SQLException e) {
+			System.err.println("Erreur lors de la récupération des valeurs.");
 			e.printStackTrace();
 		}
 		return values;
 	}
+
 
 	// Constructor to initialize the database connection
 	public Database(String dbUrl, String username, String password) throws SQLException {

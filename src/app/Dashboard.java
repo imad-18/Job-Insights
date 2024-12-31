@@ -13,14 +13,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import rmi_api.Annonce;
 import scraper.Sitemanager;
+import javafx.scene.control.cell.PropertyValueFactory;
+
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Dashboard extends Application {
@@ -427,13 +426,52 @@ public class Dashboard extends Application {
         return card;
     }
 
-    private void setupAnnouncementTable() {
+    public void setupAnnouncementTable() {
+        // Création des colonnes de la table
         TableColumn<JobAnnouncement, String> titleCol = new TableColumn<>("Titre");
-        TableColumn<JobAnnouncement, String> siteCol = new TableColumn<>("Site");
-        TableColumn<JobAnnouncement, String> dateCol = new TableColumn<>("Date");
-        TableColumn<JobAnnouncement, String> statusCol = new TableColumn<>("fonction");
+        TableColumn<JobAnnouncement, String> siteCol = new TableColumn<>("SiteName");
+        TableColumn<JobAnnouncement, String> dateCol = new TableColumn<>("StartDate");
+        TableColumn<JobAnnouncement, String> statusCol = new TableColumn<>("Fonction");
 
+        // Définir comment chaque colonne doit récupérer la valeur d'une annonce
+        titleCol.setCellValueFactory(new PropertyValueFactory<>("title"));
+        siteCol.setCellValueFactory(new PropertyValueFactory<>("SiteName"));
+        dateCol.setCellValueFactory(new PropertyValueFactory<>("StartDate"));
+        statusCol.setCellValueFactory(new PropertyValueFactory<>("Fonction"));
+
+        // Ajouter les colonnes à la table
         announcementTable.getColumns().addAll(titleCol, siteCol, dateCol, statusCol);
+
+        // Récupérer les annonces depuis la base de données et les ajouter à la table
+        ObservableList<JobAnnouncement> announcements = getAnnouncementsFromDatabase();
+        announcementTable.setItems(announcements);
+    }
+
+    // Méthode pour récupérer les annonces depuis la base de données
+    private ObservableList<JobAnnouncement> getAnnouncementsFromDatabase() {
+        ObservableList<JobAnnouncement> announcements = FXCollections.observableArrayList();
+        String query = "SELECT title, SiteName, StartDate, Fonction FROM annonce";
+
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement statement = connection.prepareStatement(query);
+             ResultSet resultSet = statement.executeQuery()) {
+
+            while (resultSet.next()) {
+                // Créer un objet JobAnnouncement pour chaque ligne retournée
+                String title = resultSet.getString("title");
+                String siteName = resultSet.getString("SiteName");
+                String startDate = resultSet.getString("StartDate");
+                String fonction = resultSet.getString("Fonction");
+
+                // Ajouter l'annonce à la liste observable
+                JobAnnouncement announcement = new JobAnnouncement(title, siteName, startDate, fonction);
+                announcements.add(announcement);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return announcements;
     }
 
     private ObservableList<ScrapingStatus> data = FXCollections.observableArrayList();  // Déclarer la liste observable en tant que champ de classe
@@ -532,11 +570,29 @@ public class Dashboard extends Application {
         startList = database.getAll();
         }
 
+
+        System.out.println("dataBase:"+database.getAll());
         System.out.println(startList.size());
+
         Map<Object, Long> occurrences = startList.stream()
                 .collect(Collectors.groupingBy(n -> n, Collectors.counting()));
 
         // Afficher les résultats
+        if(database.getAll()!=null){
+        int value1 = countOccurrences(database.getAll(),1);
+        int value2 = countOccurrences(database.getAll(),2);
+        int value3 = countOccurrences(database.getAll(),3);
+        int value4 = countOccurrences(database.getAll(),4);
+        int value5 = countOccurrences(database.getAll(),5);
+
+            series.getData().addAll(
+                    new XYChart.Data<>("5 étoiles", value5),
+                    new XYChart.Data<>("4 étoiles", value4),
+                    new XYChart.Data<>("3 étoiles", value3),
+                    new XYChart.Data<>("2 étoiles", value2),
+                    new XYChart.Data<>("1 étoile", value1)
+            );
+        }else{
         occurrences.forEach((key, value) -> System.out.println("Nombre: " + key + ", Occurrences: " + value));
         System.out.println(occurrences.get(5));
         series.getData().addAll(
@@ -545,35 +601,24 @@ public class Dashboard extends Application {
                 new XYChart.Data<>("3 étoiles", 9),
                 new XYChart.Data<>("2 étoiles", 3),
                 new XYChart.Data<>("1 étoile", 4)
-        );
+        );}
 
         barChart.getData().add(series);
         return barChart;
     }
 
     private PieChart createSectorChart() {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
-        String query = "SELECT Secteur, COUNT(*) AS sector_count FROM annonce GROUP BY Secteur";
-
-        try (Connection conn = connect(); // Directly calling the connect() method
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String sectorName = rs.getString("Secteur");
-                int sectorCount = rs.getInt("sector_count");
-                pieChartData.add(new PieChart.Data(sectorName, sectorCount));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions appropriately
-        }
-
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Informatique", 35),
+                new PieChart.Data("Finance", 25),
+                new PieChart.Data("Marketing", 20),
+                new PieChart.Data("RH", 15),
+                new PieChart.Data("Autres", 5)
+        );
         PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Distribution par Secteur");
         return chart;
     }
-
 
     private BarChart<String, Number> createRegionChart() {
         final CategoryAxis xAxis = new CategoryAxis();
@@ -583,27 +628,17 @@ public class Dashboard extends Application {
         barChart.setTitle("Distribution par Région");
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Annonces par Région");
-
-        String query = "SELECT Region, COUNT(*) AS region_count FROM annonce GROUP BY Region";
-
-        try (Connection conn = connect(); // Assuming connect() method is defined
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String regionName = rs.getString("Region");
-                int regionCount = rs.getInt("region_count");
-                series.getData().add(new XYChart.Data<>(regionName, regionCount));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions appropriately
-        }
+        series.getData().addAll(
+                new XYChart.Data<>("Casablanca", 450),
+                new XYChart.Data<>("Tanger", 200),
+                new XYChart.Data<>("Rabat", 180),
+                new XYChart.Data<>("Kenitra", 150),
+                new XYChart.Data<>("Other", 520)
+        );
 
         barChart.getData().add(series);
         return barChart;
     }
-
 
     private BarChart<String, Number> createExperienceChart() {
         final CategoryAxis xAxis = new CategoryAxis();
@@ -613,49 +648,29 @@ public class Dashboard extends Application {
         barChart.setTitle("Niveau d'Expérience Requis");
 
         XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName("Expérience Requise");
-
-        String query = "SELECT Experience, COUNT(*) AS experience_count FROM annonce GROUP BY Experience";
-
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String experienceLevel = rs.getString("Experience");
-                int experienceCount = rs.getInt("experience_count");
-                series.getData().add(new XYChart.Data<>(experienceLevel, experienceCount));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions appropriately
-        }
+        series.getData().addAll(
+                new XYChart.Data<>("Débutant", 300),
+                new XYChart.Data<>("1-3 ans", 450),
+                new XYChart.Data<>("3-5 ans", 350),
+                new XYChart.Data<>("5+ ans", 200)
+        );
 
         barChart.getData().add(series);
         return barChart;
     }
 
     private PieChart createEducationLevelChart() {
-        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList();
-
-        String query = "SELECT EtudeLevel, COUNT(*) AS education_count FROM annonce GROUP BY EtudeLevel";
-
-        try (Connection conn = connect();
-             PreparedStatement stmt = conn.prepareStatement(query);
-             ResultSet rs = stmt.executeQuery()) {
-
-            while (rs.next()) {
-                String educationLevel = rs.getString("EtudeLevel");
-                int educationCount = rs.getInt("education_count");
-                pieChartData.add(new PieChart.Data(educationLevel, educationCount));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace(); // Handle exceptions appropriately
-        }
-
+        ObservableList<PieChart.Data> pieChartData = FXCollections.observableArrayList(
+                new PieChart.Data("Bac+2", 20),
+                new PieChart.Data("Bac+3", 30),
+                new PieChart.Data("Bac+5", 40),
+                new PieChart.Data("Autres", 10)
+        );
         PieChart chart = new PieChart(pieChartData);
         chart.setTitle("Niveau d'Études Requis");
         return chart;
     }
+
 
     // Classes de modèle
     public static class JobAnnouncement {
@@ -686,6 +701,13 @@ public class Dashboard extends Application {
         private String langue;
         private String niveauLangue;
         private String salaire;
+
+        public JobAnnouncement(String title, String siteName, String startDate, String fonction) {
+            this.title = title;
+            this.siteName = siteName;
+            this.startDate = startDate;
+            this.fonction = fonction;
+        }
 
         // Getters et Setters
         public int getId() { return id; }
@@ -726,7 +748,15 @@ public class Dashboard extends Application {
         alert.showAndWait();
     }
 
-
+    public  int countOccurrences(List<Integer> numbers, int value) {
+        int count = 0;
+        for (int num : numbers) {
+            if (num == value) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     public static void main(String[] args) {
         launch(args);
